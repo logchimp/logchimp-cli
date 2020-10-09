@@ -10,5 +10,5 @@ if (argv.length === 0) {
   process.exit(1);
 }
 
-const bootstrap = require('../lib/bootstrap');
+const bootstrap = require('../src/bootstrap');
 bootstrap.run(argv);

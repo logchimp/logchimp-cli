@@ -4,7 +4,7 @@ const request = require('superagent');
 const decompress = require('decompress');
 
 class Install {
-  async run () {
+	async run() {
 		const dirIsEmpty = require("../utils/dir-is-empty");
 
 		// Check if the directory is empty
@@ -26,11 +26,11 @@ class Install {
 
 		request
 			.get(releaseLink)
-			.on('error', (error: Record<string, undefined>) => {
+			.on('error', (error) => {
 				console.log(error);
 			})
 			.pipe(fs.createWriteStream(zipFileName))
-			.on('finish', async () => {;
+			.on('finish', async () => {
 				const currentDirectory = await process.cwd();
 
 				try {
@@ -47,7 +47,7 @@ class Install {
 					console.error(err)
 				}
 			});
-  }
+	}
 };
 
 module.exports = Install;
