@@ -15,7 +15,7 @@ class Install {
 		const dirIsEmpty = require("../utils/dir-is-empty");
 
 		// Check if the directory is empty
-		if (!dirIsEmpty(process.cwd())) {
+		if (!dirIsEmpty(currentDirectory)) {
 			console.log(`${chalk.red("Error:")} Current directory is not empty, LogChimp cannot be installed here.`);
 			return;
 		}
