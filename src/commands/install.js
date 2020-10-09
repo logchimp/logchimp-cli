@@ -19,7 +19,7 @@ class Install {
 		// 	local = true;
 		// }
 
-		const releaseLink = "https://github.com/logchimp/logchimp/archive/v0.2.0.zip";
+		const releaseLink = "https://github.com/logchimp/logchimp/archive/master.zip";
 		const zipFileName = "logchimp.zip"
 
 		console.log("Downloading LogChimp");
@@ -31,20 +31,25 @@ class Install {
 			})
 			.pipe(fs.createWriteStream(zipFileName))
 			.on('finish', async () => {
-				const currentDirectory = await process.cwd();
 
 				try {
-					await decompress(`${currentDirectory}/${zipFileName}`, currentDirectory)
+					// decompress zipFileName into currentDirectory
+					const currentDirectory = await process.cwd();
+					await decompress(`${currentDirectory}/${zipFileName}`, currentDirectory);
 
-					await fs.copySync(`${currentDirectory}/logchimp-0.2.0`, currentDirectory, {
-						overwrite: true
-					})
-					await fs.removeSync(`${currentDirectory}/${zipFileName}`)
-					await fs.removeSync(`${currentDirectory}/logchimp-0.2.0`)
+					try {
+						await fs.copySync(`${currentDirectory}/logchimp-master`, currentDirectory, {
+							overwrite: true
+						})
+						await fs.removeSync(`${currentDirectory}/${zipFileName}`)
+						await fs.removeSync(`${currentDirectory}/logchimp-master`)
 
-					console.log(chalk.green('LogChimp is ready to setup!'))
+						console.log(chalk.cyan('LogChimp is ready to setup!'))
+					} catch (err) {
+						console.log(err.message);
+					}
 				} catch (err) {
-					console.error(err)
+					console.log(err.message);
 				}
 			});
 	}
