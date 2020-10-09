@@ -21,7 +21,11 @@ const run = argv => {
 		// output LogChimp-CLI version
 		new version().run(argv);
 	} else if (firstArg === 'install') {
-		new install().run(argv)
+		if (argv[0] === "help" || argv[0] === "--help" || argv[0] === "-h") {
+			new install().help();
+			return;
+		}
+		new install().run(argv);
 	} else {
 		console.error(`Unrecognized command: '${firstArg}'. Run \`logchimp help\` for usage.`)
 		process.exit(1);

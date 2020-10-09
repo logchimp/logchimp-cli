@@ -88,6 +88,23 @@ class Install {
 			console.log(error);
 		}
 	}
+
+	help() {
+		console.log(`
+${chalk.bold("USAGE")}
+  logchimp install [flags]
+
+${chalk.bold("ADDITIONAL COMMANDS")}
+  help      Help about any command
+
+${chalk.bold("FLAGS")}
+  --help      Show help for command
+
+${chalk.bold("LEARN MORE")}
+  Use 'logchimp <command> <subcommand> --help' for more information about a command.
+  Read the manual at https://logchimp.codecarrot.net/docs/install/logchimp-cli/
+`)
+	}
 };
 
 module.exports = Install;
