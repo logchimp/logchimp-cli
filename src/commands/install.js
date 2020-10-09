@@ -10,7 +10,7 @@ const removeDotFiles = require('../utils/remove-dot-files');
 const yarn = require('../utils/yarn');
 
 class Install {
-	async run() {
+	async run(argv) {
 		const currentDirectory = await process.cwd();
 		const dirIsEmpty = require("../utils/dir-is-empty");
 
@@ -20,11 +20,11 @@ class Install {
 			return;
 		}
 
-		// let local = false;
+		let local = false;
 		// If command is `logchimp install --local` do a local install for development and testing
-		// if (argv[0] === '--local') {
-		// 	local = true;
-		// }
+		if (argv[0] === '--local') {
+			local = true;
+		}
 
 		const releaseLink = "https://github.com/logchimp/logchimp/archive/master.zip";
 		const zipFileName = "logchimp.zip"
@@ -64,6 +64,11 @@ class Install {
 							// remove zipFileName file and 'logchimp-master' directory
 							await fs.removeSync(`${currentDirectory}/${zipFileName}`)
 							await fs.removeSync(`${currentDirectory}/logchimp-master`)
+
+							// remove all dot files and folder if not local
+							if (!local) {
+								await removeDotFiles(currentDirectory);
+							}
 						} catch (error) {
 							console.log(error);
 						}
