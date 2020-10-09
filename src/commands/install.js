@@ -1,10 +1,17 @@
 const fs = require('fs-extra');
 const chalk = require("chalk");
-const request = require('superagent');
 const decompress = require('decompress');
+const { Listr } = require('listr2');
+const { Observable } = require('rxjs');
+const execa = require('execa')
+
+// utils
+const removeDotFiles = require('../utils/remove-dot-files');
+const yarn = require('../utils/yarn');
 
 class Install {
 	async run() {
+		const currentDirectory = await process.cwd();
 		const dirIsEmpty = require("../utils/dir-is-empty");
 
 		// Check if the directory is empty
@@ -22,36 +29,64 @@ class Install {
 		const releaseLink = "https://github.com/logchimp/logchimp/archive/master.zip";
 		const zipFileName = "logchimp.zip"
 
-		console.log("Downloading LogChimp");
+		const tasks = new Listr([
+			{
+				title: "Downloading LogChimp",
+				task: ctx => {
+					return new Observable(async subscriber => {
+						try {
+							// download source using curl command
+							await execa('curl', [releaseLink, '-L', '-o', zipFileName])
+						} catch (error) {
+							console.log(error);
+							subscriber.error(`${chalk.red("Error:")} ${error.originalMessage}`);
+						}
 
-		request
-			.get(releaseLink)
-			.on('error', (error) => {
-				console.log(error);
-			})
-			.pipe(fs.createWriteStream(zipFileName))
-			.on('finish', async () => {
+						// decompress zipFileName into currentDirectory
+						try {
+							subscriber.next("Extracting files");
+							const zipFile = `${currentDirectory}/${zipFileName}`;
+							await decompress(zipFile, currentDirectory);
+							ctx.currentDirectory = currentDirectory;
 
-				try {
-					// decompress zipFileName into currentDirectory
-					const currentDirectory = await process.cwd();
-					await decompress(`${currentDirectory}/${zipFileName}`, currentDirectory);
+						} catch (error) {
+							console.log(error);
+						}
 
-					try {
-						await fs.copySync(`${currentDirectory}/logchimp-master`, currentDirectory, {
-							overwrite: true
-						})
-						await fs.removeSync(`${currentDirectory}/${zipFileName}`)
-						await fs.removeSync(`${currentDirectory}/logchimp-master`)
+						try {
+							subscriber.next("Copying files");
 
-						console.log(chalk.cyan('LogChimp is ready to setup!'))
-					} catch (err) {
-						console.log(err.message);
-					}
-				} catch (err) {
-					console.log(err.message);
+							// copy files to currentDirectory
+							await fs.copySync(`${currentDirectory}/logchimp-master`, currentDirectory, {
+								overwrite: true
+							});
+
+							// remove zipFileName file and 'logchimp-master' directory
+							await fs.removeSync(`${currentDirectory}/${zipFileName}`)
+							await fs.removeSync(`${currentDirectory}/logchimp-master`)
+						} catch (error) {
+							console.log(error);
+						}
+
+						subscriber.complete();
+					})
 				}
-			});
+			},
+			{
+				title: "Installing dependencies",
+				task: async ctx => {
+					const args = ['install', '--no-emoji', '--no-progress'];
+
+					return await yarn(args);
+				}
+			}
+		]);
+
+		try {
+			await tasks.run();
+		} catch (error) {
+			console.log(error);
+		}
 	}
 };
 
