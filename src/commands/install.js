@@ -4,9 +4,12 @@ const decompress = require('decompress')
 const {Listr} = require('listr2')
 const {Observable} = require('rxjs')
 const execa = require('execa')
+const path = require('path')
+const omgopass = require('omgopass')
 
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
+const Config = require('../utils/config')
 const removeDotFiles = require('../utils/remove-dot-files')
 const yarn = require('../utils/yarn')
 
@@ -21,6 +24,28 @@ class InstallCommand extends Command {
     }
 
     const {flags} = this.parse(InstallCommand)
+
+    // Initialize a new Config instance for LogChimp site installation
+    const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
+
+    // save database configuration
+    config.set({
+      database: {
+        host: flags.dbhost,
+        user: flags.dbuser,
+        password: flags.dbpass,
+        name: flags.dbname,
+        port: flags.dbport,
+      },
+    }).save()
+
+    // save secretKey and servertPort
+    config.set({
+      server: {
+        port: flags.port,
+        secretKey: flags.secretkey,
+      },
+    }).save()
 
     const releaseLink = 'https://github.com/logchimp/logchimp/archive/master.zip'
     const zipFileName = 'logchimp.zip'
@@ -94,10 +119,40 @@ class InstallCommand extends Command {
 InstallCommand.description = `Install a brand new instance of LogChimp
 `
 
+const randomPassword = omgopass()
+
 InstallCommand.flags = {
+  port: flags.integer({
+    description: 'Server port to listen on',
+    default: 3000,
+  }),
+  secretkey: flags.string({
+    description: 'Secret key for password validation',
+    default: randomPassword,
+  }),
   local: flags.boolean({
     description: 'Best for local development/testing',
     default: false,
+  }),
+  dbhost: flags.string({
+    description: 'Database host',
+    default: 'localhost',
+  }),
+  dbuser: flags.string({
+    description: 'Database username',
+    default: 'logchimp_user',
+  }),
+  dbpass: flags.string({
+    description: 'Database password (default auto generate random password)',
+    default: randomPassword,
+  }),
+  dbname: flags.string({
+    description: 'Database name',
+    default: 'logchimp',
+  }),
+  dbport: flags.integer({
+    description: 'Database port (default postgre port `5432`)',
+    default: 5432,
   }),
 }
 
@@ -106,6 +161,7 @@ InstallCommand.usage = ['install [flags]']
 InstallCommand.examples = [
   '$ logchimp install',
   '$ logchimp install --local',
+  '$ logchimp install --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
 ]
 
 module.exports = InstallCommand
