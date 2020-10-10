@@ -98,6 +98,14 @@ InstallCommand.description = `Install a brand new instance of LogChimp
 const randomPassword = omgopass()
 
 InstallCommand.flags = {
+  port: flags.integer({
+    description: 'Server port to listen on',
+    default: 3000,
+  }),
+  secretkey: flags.string({
+    description: 'Secret key for password validation',
+    default: randomPassword,
+  }),
   local: flags.boolean({
     description: 'Best for local development/testing',
     default: false,
