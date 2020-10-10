@@ -1,115 +1,111 @@
-const fs = require('fs-extra');
-const chalk = require("chalk");
-const decompress = require('decompress');
-const { Listr } = require('listr2');
-const { Observable } = require('rxjs');
+const {Command, flags} = require('@oclif/command')
+const fs = require('fs-extra')
+const decompress = require('decompress')
+const {Listr} = require('listr2')
+const {Observable} = require('rxjs')
 const execa = require('execa')
 
 // utils
-const removeDotFiles = require('../utils/remove-dot-files');
-const yarn = require('../utils/yarn');
+const dirIsEmpty = require('../utils/dir-is-empty')
+const removeDotFiles = require('../utils/remove-dot-files')
+const yarn = require('../utils/yarn')
 
-class Install {
-	async run(argv) {
-		const currentDirectory = await process.cwd();
-		const dirIsEmpty = require("../utils/dir-is-empty");
+class InstallCommand extends Command {
+  async run() {
+    const currentDirectory = await process.cwd()
 
-		// Check if the directory is empty
-		if (!dirIsEmpty(currentDirectory)) {
-			console.log(`${chalk.red("Error:")} Current directory is not empty, LogChimp cannot be installed here.`);
-			return;
-		}
+    // Check if the directory is empty
+    if (!dirIsEmpty(currentDirectory)) {
+      this.error('Current directory is not empty, LogChimp cannot be installed here.')
+      return
+    }
 
-		let local = false;
-		// If command is `logchimp install --local` do a local install for development and testing
-		if (argv[0] === '--local') {
-			local = true;
-		}
+    const {flags} = this.parse(InstallCommand)
 
-		const releaseLink = "https://github.com/logchimp/logchimp/archive/master.zip";
-		const zipFileName = "logchimp.zip"
+    const releaseLink = 'https://github.com/logchimp/logchimp/archive/master.zip'
+    const zipFileName = 'logchimp.zip'
 
-		const tasks = new Listr([
-			{
-				title: "Downloading LogChimp",
-				task: ctx => {
-					return new Observable(async subscriber => {
-						try {
-							// download source using curl command
-							await execa('curl', [releaseLink, '-L', '-o', zipFileName])
-						} catch (error) {
-							console.log(error);
-							subscriber.error(`${chalk.red("Error:")} ${error.originalMessage}`);
-						}
+    const tasks = new Listr([
+      {
+        title: 'Downloading LogChimp',
+        task: () => {
+          return new Observable(async subscriber => {
+            try {
+              // download source using curl command
+              await execa('curl', [releaseLink, '-L', '-o', zipFileName])
+            } catch (error) {
+              this.error(error)
+            }
 
-						// decompress zipFileName into currentDirectory
-						try {
-							subscriber.next("Extracting files");
-							const zipFile = `${currentDirectory}/${zipFileName}`;
-							await decompress(zipFile, currentDirectory);
-							ctx.currentDirectory = currentDirectory;
+            // decompress zipFileName into currentDirectory
+            try {
+              subscriber.next('Extracting files')
+              const zipFile = `${currentDirectory}/${zipFileName}`
+              await decompress(zipFile, currentDirectory)
+            } catch (error) {
+              this.error(error)
+            }
 
-						} catch (error) {
-							console.log(error);
-						}
+            try {
+              subscriber.next('Copying files')
 
-						try {
-							subscriber.next("Copying files");
+              // copy files to currentDirectory
+              await fs.copySync(`${currentDirectory}/logchimp-master`, currentDirectory, {
+                overwrite: true,
+              })
 
-							// copy files to currentDirectory
-							await fs.copySync(`${currentDirectory}/logchimp-master`, currentDirectory, {
-								overwrite: true
-							});
+              // remove zipFileName file and 'logchimp-master' directory
+              await fs.removeSync(`${currentDirectory}/${zipFileName}`)
+              await fs.removeSync(`${currentDirectory}/logchimp-master`)
 
-							// remove zipFileName file and 'logchimp-master' directory
-							await fs.removeSync(`${currentDirectory}/${zipFileName}`)
-							await fs.removeSync(`${currentDirectory}/logchimp-master`)
+              // If command is `logchimp install --local` do a local install for development and testing
+              // remove all dot files and folder if not local
+              if (!flags.local) {
+                await removeDotFiles(currentDirectory)
+              }
+            } catch (error) {
+              this.error(error)
+            }
 
-							// remove all dot files and folder if not local
-							if (!local) {
-								await removeDotFiles(currentDirectory);
-							}
-						} catch (error) {
-							console.log(error);
-						}
+            subscriber.complete()
+          })
+        },
+      },
+      {
+        title: 'Installing dependencies',
+        task: () => {
+          const args = ['install', '--no-emoji', '--no-progress']
 
-						subscriber.complete();
-					})
-				}
-			},
-			{
-				title: "Installing dependencies",
-				task: async ctx => {
-					const args = ['install', '--no-emoji', '--no-progress'];
+          return yarn(args)
+        },
+      },
+    ])
 
-					return await yarn(args);
-				}
-			}
-		]);
+    // LogChimp is ready to setup!
 
-		try {
-			await tasks.run();
-		} catch (error) {
-			console.log(error);
-		}
-	}
+    try {
+      await tasks.run()
+    } catch (error) {
+      this.error(error)
+    }
+  }
+}
 
-	help() {
-		console.log(`
-${chalk.bold("USAGE")}
-  logchimp install [flags]
+InstallCommand.description = `Install a brand new instance of LogChimp
+`
 
-${chalk.bold("ADDITIONAL COMMANDS")}
-  help      Help about any command
+InstallCommand.flags = {
+  local: flags.boolean({
+    description: 'Best for local development/testing',
+    default: false,
+  }),
+}
 
-${chalk.bold("FLAGS")}
-  --help      Show help for command
+InstallCommand.usage = ['install [flags]']
 
-${chalk.bold("LEARN MORE")}
-  Use 'logchimp <command> <subcommand> --help' for more information about a command.
-  Read the manual at https://logchimp.codecarrot.net/docs/install/logchimp-cli/
-`)
-	}
-};
+InstallCommand.examples = [
+  '$ logchimp install',
+  '$ logchimp install --local',
+]
 
-module.exports = Install;
+module.exports = InstallCommand
