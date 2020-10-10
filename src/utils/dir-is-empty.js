@@ -1,18 +1,16 @@
-const fs = require('fs-extra');
+const fs = require('fs-extra')
 
 /**
  * Present working directory in terminal
- *
- * @param string dir
+ * @param {string} dir current working directory
+ * @returns {boolean} ture
  */
 const dirIsEmpty = dir => {
-	const files = fs.readdirSync(dir);
+  const files = fs.readdirSync(dir)
 
-	if (!files.length) {
-		return true;
-	} else {
-		return false;
-	}
-};
+  if (!files.length()) {
+    return true
+  }
+}
 
-module.exports = dirIsEmpty;
+module.exports = dirIsEmpty
