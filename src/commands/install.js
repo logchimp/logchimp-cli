@@ -35,7 +35,7 @@ class InstallCommand extends Command {
         user: flags.dbuser,
         password: flags.dbpass,
         name: flags.dbname,
-        port: flags.port,
+        port: flags.dbport,
       },
     }).save()
 
