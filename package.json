@@ -5,7 +5,7 @@
   "author": "Yashu Mittal @mittalyashu",
   "bin": {
     "logchimp": "./bin/run"
-	},
+  },
   "bugs": "https://github.com/logchimp/logchimp-cli/issues",
   "dependencies": {
     "@oclif/command": "^1",
