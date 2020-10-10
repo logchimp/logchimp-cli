@@ -4,10 +4,12 @@ const decompress = require('decompress')
 const {Listr} = require('listr2')
 const {Observable} = require('rxjs')
 const execa = require('execa')
+const path = require('path')
 const omgopass = require('omgopass')
 
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
+const Config = require('../utils/config')
 const removeDotFiles = require('../utils/remove-dot-files')
 const yarn = require('../utils/yarn')
 
@@ -22,6 +24,28 @@ class InstallCommand extends Command {
     }
 
     const {flags} = this.parse(InstallCommand)
+
+    // Initialize a new Config instance for LogChimp site installation
+    const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
+
+    // save database configuration
+    config.set({
+      database: {
+        host: flags.dbhost,
+        user: flags.dbuser,
+        password: flags.dbpass,
+        name: flags.dbname,
+        port: flags.port,
+      },
+    }).save()
+
+    // save secretKey and servertPort
+    config.set({
+      server: {
+        port: flags.port,
+        secretKey: flags.secretkey,
+      },
+    }).save()
 
     const releaseLink = 'https://github.com/logchimp/logchimp/archive/master.zip'
     const zipFileName = 'logchimp.zip'
