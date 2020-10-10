@@ -8,7 +8,7 @@ const fs = require('fs-extra')
 const dirIsEmpty = dir => {
   const files = fs.readdirSync(dir)
 
-  if (!files.length()) {
+  if (!files.length) {
     return true
   }
 }
