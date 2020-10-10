@@ -4,6 +4,7 @@ const decompress = require('decompress')
 const {Listr} = require('listr2')
 const {Observable} = require('rxjs')
 const execa = require('execa')
+const omgopass = require('omgopass')
 
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
@@ -94,10 +95,32 @@ class InstallCommand extends Command {
 InstallCommand.description = `Install a brand new instance of LogChimp
 `
 
+const randomPassword = omgopass()
+
 InstallCommand.flags = {
   local: flags.boolean({
     description: 'Best for local development/testing',
     default: false,
+  }),
+  dbhost: flags.string({
+    description: 'Database host',
+    default: 'localhost',
+  }),
+  dbuser: flags.string({
+    description: 'Database username',
+    default: 'logchimp_user',
+  }),
+  dbpass: flags.string({
+    description: 'Database password (default auto generate random password)',
+    default: randomPassword,
+  }),
+  dbname: flags.string({
+    description: 'Database name',
+    default: 'logchimp',
+  }),
+  dbport: flags.integer({
+    description: 'Database port (default postgre port `5432`)',
+    default: 5432,
   }),
 }
 
@@ -106,6 +129,7 @@ InstallCommand.usage = ['install [flags]']
 InstallCommand.examples = [
   '$ logchimp install',
   '$ logchimp install --local',
+  '$ logchimp install --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
 ]
 
 module.exports = InstallCommand
