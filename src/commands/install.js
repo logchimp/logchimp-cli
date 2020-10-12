@@ -162,7 +162,7 @@ InstallCommand.flags = {
     description: 'Database name',
   }),
   dbport: flags.integer({
-    description: 'Database port (default postgre port `5432`)',
+    description: 'Database port',
     default: 5432,
   }),
   dbssl: flags.boolean({
