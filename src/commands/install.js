@@ -19,7 +19,6 @@ class InstallCommand extends Command {
     // Check if the directory is empty
     if (!dirIsEmpty(currentDirectory)) {
       this.error('Current directory is not empty, LogChimp cannot be installed here.')
-      return
     }
 
     const {flags} = this.parse(InstallCommand)
