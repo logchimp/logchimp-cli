@@ -154,14 +154,12 @@ InstallCommand.flags = {
   }),
   dbuser: flags.string({
     description: 'Database username',
-    default: 'logchimp_user',
   }),
   dbpass: flags.string({
     description: 'Database password (default auto generate random password)',
   }),
   dbname: flags.string({
     description: 'Database name',
-    default: 'logchimp',
   }),
   dbport: flags.integer({
     description: 'Database port (default postgre port `5432`)',
