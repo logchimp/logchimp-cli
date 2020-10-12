@@ -25,6 +25,12 @@ class InstallCommand extends Command {
 
     const {flags} = this.parse(InstallCommand)
 
+    // Check for database configuration
+    const dbConfig = (Boolean(flags.dbname) && Boolean(flags.dbuser))
+    if (!dbConfig) {
+      this.error('Database configuration not provided, to learn more run \'logchimp install --help\'')
+    }
+
     // Initialize a new Config instance for LogChimp site installation
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
