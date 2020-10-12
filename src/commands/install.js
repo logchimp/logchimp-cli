@@ -11,6 +11,7 @@ const omgopass = require('omgopass')
 const dirIsEmpty = require('../utils/dir-is-empty')
 const Config = require('../utils/config')
 const yarn = require('../utils/yarn')
+const initServer = require('../utils/init-server')
 
 class InstallCommand extends Command {
   async run() {
@@ -133,6 +134,15 @@ class InstallCommand extends Command {
                 })
               },
             },
+          ])
+        },
+      },
+      {
+        title: 'Starting LogChimp',
+        enabled: () => !flags.local,
+        task: () => {
+          return new Listr([
+            ...initServer(config),
           ])
         },
       },
