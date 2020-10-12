@@ -113,6 +113,29 @@ class InstallCommand extends Command {
           return yarn(args)
         },
       },
+      {
+        title: 'Setting up LogChimp',
+        enabled: () => !flags.local,
+        task: () => {
+          return new Listr([
+            {
+              title: 'Compiling frontend',
+              task: () => {
+                const command = execa('yarn', ['run', 'frontend:build'])
+
+                return new Observable(subscribe => {
+                  subscribe.next('Building for production...')
+                  command.then(() => {
+                    subscribe.complete()
+                  }).catch(error => {
+                    subscribe.error(error)
+                  })
+                })
+              },
+            },
+          ])
+        },
+      },
     ])
 
     // LogChimp is ready to setup!
