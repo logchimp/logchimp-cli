@@ -31,6 +31,12 @@ class InstallCommand extends Command {
       this.error('Database configuration not provided, to learn more run \'logchimp install --help\'')
     }
 
+    // Check for database SSL
+    if (flags.local) {
+      process.env.NODE_ENV = 'development'
+      flags.dbssl = false
+    }
+
     // Initialize a new Config instance for LogChimp site installation
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
@@ -43,6 +49,7 @@ class InstallCommand extends Command {
         password: flags.dbpass ? flags.dbpass : generateDatabasePassword,
         name: flags.dbname,
         port: flags.dbport,
+        ssl: flags.dbssl,
       },
     }).save()
 
@@ -159,6 +166,11 @@ InstallCommand.flags = {
   dbport: flags.integer({
     description: 'Database port (default postgre port `5432`)',
     default: 5432,
+  }),
+  dbssl: flags.boolean({
+    description: 'Enable SSL for database (default true for production)',
+    default: true,
+    allowNo: true,
   }),
 }
 
