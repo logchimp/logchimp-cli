@@ -28,12 +28,13 @@ class InstallCommand extends Command {
     // Initialize a new Config instance for LogChimp site installation
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
+    const generateDatabasePassword = omgopass()
     // save database configuration
     config.set({
       database: {
         host: flags.dbhost,
         user: flags.dbuser,
-        password: flags.dbpass,
+        password: flags.dbpass ? flags.dbpass : generateDatabasePassword,
         name: flags.dbname,
         port: flags.dbport,
       },
@@ -144,7 +145,6 @@ InstallCommand.flags = {
   }),
   dbpass: flags.string({
     description: 'Database password (default auto generate random password)',
-    default: randomPassword,
   }),
   dbname: flags.string({
     description: 'Database name',
