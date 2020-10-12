@@ -25,25 +25,42 @@ class InstallCommand extends Command {
 
     const {flags} = this.parse(InstallCommand)
 
+    // Check for database configuration
+    const dbConfig = (Boolean(flags.dbname) && Boolean(flags.dbuser))
+    if (!dbConfig) {
+      this.error('Database configuration not provided, to learn more run \'logchimp install --help\'')
+    }
+
+    // Check for database SSL
+    if (flags.local) {
+      process.env.NODE_ENV = 'development'
+      flags.dbssl = false
+    }
+
     // Initialize a new Config instance for LogChimp site installation
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
+    const generateDatabasePassword = omgopass()
     // save database configuration
     config.set({
       database: {
         host: flags.dbhost,
         user: flags.dbuser,
-        password: flags.dbpass,
+        password: flags.dbpass ? flags.dbpass : generateDatabasePassword,
         name: flags.dbname,
         port: flags.dbport,
+        ssl: flags.dbssl,
       },
     }).save()
 
+    const secretKey = omgopass({
+      minSyllableLength: 10,
+    })
     // save secretKey and servertPort
     config.set({
       server: {
         port: flags.port,
-        secretKey: flags.secretkey,
+        secretKey: flags.secretkey ? flags.secretkey : secretKey,
       },
     }).save()
 
@@ -127,8 +144,7 @@ InstallCommand.flags = {
     default: 3000,
   }),
   secretkey: flags.string({
-    description: 'Secret key for password validation',
-    default: randomPassword,
+    description: 'Secret key for password validation (default auto generate random string)',
   }),
   local: flags.boolean({
     description: 'Best for local development/testing',
@@ -140,19 +156,21 @@ InstallCommand.flags = {
   }),
   dbuser: flags.string({
     description: 'Database username',
-    default: 'logchimp_user',
   }),
   dbpass: flags.string({
     description: 'Database password (default auto generate random password)',
-    default: randomPassword,
   }),
   dbname: flags.string({
     description: 'Database name',
-    default: 'logchimp',
   }),
   dbport: flags.integer({
-    description: 'Database port (default postgre port `5432`)',
+    description: 'Database port',
     default: 5432,
+  }),
+  dbssl: flags.boolean({
+    description: 'Enable SSL for database (default true for production)',
+    default: true,
+    allowNo: true,
   }),
 }
 
