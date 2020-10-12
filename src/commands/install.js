@@ -10,7 +10,6 @@ const omgopass = require('omgopass')
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
 const Config = require('../utils/config')
-const removeDotFiles = require('../utils/remove-dot-files')
 const yarn = require('../utils/yarn')
 
 class InstallCommand extends Command {
@@ -99,12 +98,6 @@ class InstallCommand extends Command {
               // remove zipFileName file and 'logchimp-master' directory
               await fs.removeSync(`${currentDirectory}/${zipFileName}`)
               await fs.removeSync(`${currentDirectory}/logchimp-master`)
-
-              // If command is `logchimp install --local` do a local install for development and testing
-              // remove all dot files and folder if not local
-              if (!flags.local) {
-                await removeDotFiles(currentDirectory)
-              }
             } catch (error) {
               this.error(error)
             }
