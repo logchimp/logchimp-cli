@@ -140,7 +140,7 @@ InstallCommand.flags = {
     description: 'Secret key for password validation (default auto generate random string)',
   }),
   local: flags.boolean({
-    description: 'Best for local development/testing',
+    description: 'Run LogChimp for local development/testing',
     default: false,
   }),
   dbhost: flags.string({
