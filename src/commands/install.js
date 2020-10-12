@@ -53,11 +53,14 @@ class InstallCommand extends Command {
       },
     }).save()
 
+    const secretKey = omgopass({
+      minSyllableLength: 10,
+    })
     // save secretKey and servertPort
     config.set({
       server: {
         port: flags.port,
-        secretKey: flags.secretkey,
+        secretKey: flags.secretkey ? flags.secretkey : secretKey,
       },
     }).save()
 
@@ -133,16 +136,13 @@ class InstallCommand extends Command {
 InstallCommand.description = `Install a brand new instance of LogChimp
 `
 
-const randomPassword = omgopass()
-
 InstallCommand.flags = {
   port: flags.integer({
     description: 'Server port to listen on',
     default: 3000,
   }),
   secretkey: flags.string({
-    description: 'Secret key for password validation',
-    default: randomPassword,
+    description: 'Secret key for password validation (default auto generate random string)',
   }),
   local: flags.boolean({
     description: 'Best for local development/testing',
