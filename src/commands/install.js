@@ -6,6 +6,7 @@ const {Observable} = require('rxjs')
 const execa = require('execa')
 const path = require('path')
 const omgopass = require('omgopass')
+const chalk = require('chalk')
 
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
@@ -148,10 +149,23 @@ class InstallCommand extends Command {
       },
     ])
 
-    // LogChimp is ready to setup!
-
     try {
       await tasks.run()
+
+      if (flags.local) {
+        this.log('')
+        this.log(chalk.gray('--------------------'))
+        this.log('')
+        this.log(chalk.green('Your local environment is ready!'))
+        this.log('You can refer to https://logchimp.codecarrot.net/docs/ for starting dev server locally.')
+      } else {
+        // Show success message for running LogChimp successfully
+        this.log('')
+        this.log(chalk.gray('--------------------'))
+        this.log('')
+        this.log(chalk.green('LogChimp is installed successfully!'))
+        this.log(chalk.yellow.dim(('Ctrl+C to shut down')))
+      }
     } catch (error) {
       this.error(error)
     }
