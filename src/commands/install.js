@@ -143,7 +143,7 @@ class InstallCommand extends Command {
         enabled: () => !flags.local,
         task: () => {
           return new Listr([
-            ...initServer(config),
+            ...initServer(),
           ])
         },
       },
