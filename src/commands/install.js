@@ -6,11 +6,13 @@ const {Observable} = require('rxjs')
 const execa = require('execa')
 const path = require('path')
 const omgopass = require('omgopass')
+const chalk = require('chalk')
 
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
 const Config = require('../utils/config')
 const yarn = require('../utils/yarn')
+const initServer = require('../utils/init-server')
 
 class InstallCommand extends Command {
   async run() {
@@ -113,12 +115,57 @@ class InstallCommand extends Command {
           return yarn(args)
         },
       },
-    ])
+      {
+        title: 'Setting up LogChimp',
+        enabled: () => !flags.local,
+        task: () => {
+          return new Listr([
+            {
+              title: 'Compiling frontend',
+              task: () => {
+                const command = execa('yarn', ['run', 'frontend:build'])
 
-    // LogChimp is ready to setup!
+                return new Observable(subscribe => {
+                  subscribe.next('Building for production...')
+                  command.then(() => {
+                    subscribe.complete()
+                  }).catch(error => {
+                    subscribe.error(error)
+                  })
+                })
+              },
+            },
+          ])
+        },
+      },
+      {
+        title: 'Starting LogChimp',
+        enabled: () => !flags.local,
+        task: () => {
+          return new Listr([
+            ...initServer(),
+          ])
+        },
+      },
+    ])
 
     try {
       await tasks.run()
+
+      if (flags.local) {
+        this.log('')
+        this.log(chalk.gray('--------------------'))
+        this.log('')
+        this.log(chalk.green('Your local environment is ready!'))
+        this.log('You can refer to https://logchimp.codecarrot.net/docs/ for starting dev server locally.')
+      } else {
+        // Show success message for running LogChimp successfully
+        this.log('')
+        this.log(chalk.gray('--------------------'))
+        this.log('')
+        this.log(chalk.green('LogChimp is installed successfully!'))
+        this.log(chalk.yellow.dim(('Ctrl+C to shut down')))
+      }
     } catch (error) {
       this.error(error)
     }
@@ -127,8 +174,6 @@ class InstallCommand extends Command {
 
 InstallCommand.description = `Install a brand new instance of LogChimp
 `
-
-const randomPassword = omgopass()
 
 InstallCommand.flags = {
   port: flags.integer({
