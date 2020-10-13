@@ -11,7 +11,7 @@ module.exports = () => {
       })
 
       command.catch(error => {
-        this.error(error)
+        return error
       })
     },
   }]
