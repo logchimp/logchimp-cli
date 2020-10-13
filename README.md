@@ -21,9 +21,11 @@
   <a href="https://discord.gg/A7mztcC">Discord</a>
 </h3>
 
-<a href="https://logchimp.codecarrot.net/">
-	<img src="./images/screnshot-of-logchimp-help-command.png" alt="screnshot of logchimp help command" />
-</a>
+<p align="center">
+	<a href="https://logchimp.codecarrot.net/">
+		<img src="./images/screnshot-of-logchimp-help-command.png" alt="screnshot of logchimp help command" width="600" />
+	</a>
+</p>
 
 ## Basic setup
 
