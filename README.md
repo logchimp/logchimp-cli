@@ -1,87 +1,52 @@
-logchimp-cli
-============
+<h1 align="center">
+  LogChimp CLI
+</h1>
 
-CLI Tool for installing &amp; updating LogChimp
+<p align="center">
+  <a href="https://npmjs.org/package/logchimp-cli">
+    <img src="https://img.shields.io/npm/v/logchimp-cli.svg" alt="Version" />
+  </a>
+  <a href="https://npmjs.org/package/logchimp-cli">
+    <img src="https://img.shields.io/npm/dw/logchimp-cli.svg" alt="Downloads/week" />
+  </a>
+</p>
 
-[![Version](https://img.shields.io/npm/v/logchimp-cli.svg)](https://npmjs.org/package/logchimp-cli)
-[![Downloads/week](https://img.shields.io/npm/dw/logchimp-cli.svg)](https://npmjs.org/package/logchimp-cli)
-[![License](https://img.shields.io/npm/l/logchimp-cli.svg)](https://github.com/logchimp/logchimp-cli/blob/master/LICENSE)
+<h3 align="center">
+  <a href="https://logchimp.codecarrot.net/docs/install/cli/">Docs</a>
+  <span> · </span>
+  <a href="./CONTRIBUTING.md">Contribute</a>
+  <span> · </span>
+  <a href="https://twitter.com/logchimp">Twitter</a>
+  <span> · </span>
+  <a href="https://discord.gg/A7mztcC">Discord</a>
+</h3>
 
-<!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+<a href="https://logchimp.codecarrot.net/">
+	<img src="./images/screnshot-of-logchimp-help-command.png" alt="screnshot of logchimp help command" />
+</a>
 
-<!-- tocstop -->
-# Usage
-<!-- usage -->
-```sh-session
-$ npm install -g logchimp-cli
-$ logchimp COMMAND
-running command...
-$ logchimp (-v|--version|version)
-logchimp-cli/0.0.0 darwin-x64 node-v12.18.3
-$ logchimp --help [COMMAND]
-USAGE
-  $ logchimp COMMAND
-...
-```
-<!-- usagestop -->
-# Commands
-<!-- commands -->
-* [`logchimp hello`](#logchimp-hello)
-* [`logchimp help [COMMAND]`](#logchimp-help-command)
-* [`logchimp install`](#logchimp-install)
+## Basic setup
 
-## `logchimp hello`
+* `npm install -g logchimp-cli`
+* `logchimp install [flags]` _(for production)_
+* `logchimp install --local` _(for a local setup, useful for development/testing)_
 
-Describe the command here
+## Project Goals
 
-```
-USAGE
-  $ logchimp hello
+The objective of the LogChimp CLI is to setting up and maintaining a LogChimp site as easily as possible.
 
-OPTIONS
-  -n, --name=name  name to print
+LogChimp CLI is aimed at people who are comfortable in a command-line environment, and therefore some technical knowledge is assumed.
 
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
+Read the [setup guide](https://logchimp.codecarrot.net/docs/install/) to learn other ways of setting up a LogChimp site.
 
-_See code: [src/commands/hello.js](https://github.com/logchimp/logchimp-cli/blob/v0.0.0/src/commands/hello.js)_
+### Recommended Stack
 
-## `logchimp help [COMMAND]`
+We officially recommend the following stack for production installs.
 
-display help for logchimp
+* Ubuntu 16.04 or Ubuntu 18.04
+* NGINX
+* Node.js 12
+* PostgreSQL 10 or 12
+* Systemd
 
-```
-USAGE
-  $ logchimp help [COMMAND]
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
-```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
-
-## `logchimp install`
-
-Describe the command here
-
-```
-USAGE
-  $ logchimp install
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/install.js](https://github.com/logchimp/logchimp-cli/blob/v0.0.0/src/commands/install.js)_
-<!-- commandsstop -->
+Our primary focus is only to support this stack, to ensure that everyone that uses this stack can set up their LogChimp site. As with every additional option for configuration or additional environment creates exponential complexities and maintenance overhead.
