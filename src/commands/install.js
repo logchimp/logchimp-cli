@@ -175,8 +175,6 @@ class InstallCommand extends Command {
 InstallCommand.description = `Install a brand new instance of LogChimp
 `
 
-const randomPassword = omgopass()
-
 InstallCommand.flags = {
   port: flags.integer({
     description: 'Server port to listen on',
