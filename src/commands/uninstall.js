@@ -67,7 +67,7 @@ class UninstallCommand extends Command {
   }
 }
 
-UninstallCommand.description = `Remove a LogChimp instance and any releated configuration files
+UninstallCommand.description = `Remove a LogChimp instance and any related configuration files
 `
 
 UninstallCommand.flags = {
