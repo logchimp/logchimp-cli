@@ -34,12 +34,12 @@ class ConfigGenerateCommand extends Command {
 
     const configDefaults = {
       database: {
-        dbhost: 'localhost',
-        dbuser: 'logchimp',
-        dbpass: generateDatabasePassword,
-        dbname: 'logchimp',
-        dbport: 5432,
-        dbssl: true,
+        host: 'localhost',
+        user: 'logchimp',
+        password: generateDatabasePassword,
+        name: 'logchimp',
+        port: 5432,
+        ssl: true,
       },
       server: {
         port: 3000,
@@ -82,9 +82,9 @@ class ConfigGenerateCommand extends Command {
       // database
       {
         type: 'input',
-        name: 'database.dbhost',
+        name: 'database.host',
         message: 'Database host',
-        default: configDefaults.database.dbhost,
+        default: configDefaults.database.host,
         validate: answer => {
           const isString = isNaN(answer)
 
@@ -98,7 +98,7 @@ class ConfigGenerateCommand extends Command {
       },
       {
         type: 'input',
-        name: 'database.dbpass',
+        name: 'database.password',
         message: 'Database password (default auto generate random password)',
         filter: answer => {
           // Return auto generated password on empty answer
@@ -108,9 +108,9 @@ class ConfigGenerateCommand extends Command {
       },
       {
         type: 'input',
-        name: 'database.dbname',
+        name: 'database.name',
         message: 'Database name',
-        default: configDefaults.database.dbname,
+        default: configDefaults.database.name,
         validate: answer => {
           const isString = isNaN(answer)
 
@@ -124,9 +124,9 @@ class ConfigGenerateCommand extends Command {
       },
       {
         type: 'input',
-        name: 'database.dbport',
+        name: 'database.port',
         message: 'Database port',
-        default: configDefaults.database.dbport,
+        default: configDefaults.database.port,
         validate: answer => {
           // Check port is not empty and is number
           const isNumber = !isNaN(answer)
@@ -137,10 +137,10 @@ class ConfigGenerateCommand extends Command {
       },
       {
         type: 'confirm',
-        name: 'database.dbssl',
+        name: 'database.ssl',
         message: 'Enable SSL for database (default true for production)',
         choices: ['true', 'false'],
-        default: configDefaults.database.dbssl,
+        default: configDefaults.database.ssl,
       },
     ])
 
