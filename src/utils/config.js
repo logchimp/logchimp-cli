@@ -1,4 +1,5 @@
 const fs = require('fs-extra')
+const _ = require('lodash')
 
 class Config {
   /**
@@ -15,8 +16,8 @@ class Config {
     this.values = Config.exists(this.file) || {}
   }
 
-  get(key) {
-    return this.values[key]
+  get(key, defaultValue) {
+    return _.get(this.values, key, defaultValue)
   }
 
   /**
