@@ -61,11 +61,23 @@ class ConfigGenerateCommand extends Command {
         name: 'server.port',
         message: 'Server port to listen on',
         default: configDefaults.server.port,
+        validate: answer => {
+          // Check port is not empty and is number
+          const isNumber = !isNaN(answer)
+          if (answer !== '') if (isNumber) return true
+
+          return 'Please enter a correct port'
+        },
       },
       {
         type: 'input',
         name: 'server.secretkey',
         message: 'Secret key for password validation (default to auto generate random string)',
+        filter: answer => {
+          // Return auto generated secretKey on empty answer
+          if (answer === '') return generateSecretKey
+          return answer
+        },
       },
       // database
       {
@@ -73,23 +85,55 @@ class ConfigGenerateCommand extends Command {
         name: 'database.dbhost',
         message: 'Database host',
         default: configDefaults.database.dbhost,
+        validate: answer => {
+          const isString = isNaN(answer)
+
+          // Warn for special characters
+          const removeSpecialCharacters = answer.match(/[^.\w\s]/gi)
+          if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
+
+          if (isString) return true
+          return 'Please enter a valid host'
+        },
       },
       {
         type: 'input',
         name: 'database.dbpass',
         message: 'Database password (default auto generate random password)',
+        filter: answer => {
+          // Return auto generated password on empty answer
+          if (answer === '') return generateDatabasePassword
+          return answer
+        },
       },
       {
         type: 'input',
         name: 'database.dbname',
         message: 'Database name',
         default: configDefaults.database.dbname,
+        validate: answer => {
+          const isString = isNaN(answer)
+
+          // Warn for special characters
+          const removeSpecialCharacters = answer.match(/[^\w\s]/gi)
+          if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
+
+          if (isString) return true
+          return 'Please enter a valid name'
+        },
       },
       {
         type: 'input',
         name: 'database.dbport',
         message: 'Database port',
         default: configDefaults.database.dbport,
+        validate: answer => {
+          // Check port is not empty and is number
+          const isNumber = !isNaN(answer)
+          if (answer !== '') if (isNumber) return true
+
+          return 'Please enter a correct port'
+        },
       },
       {
         type: 'confirm',
