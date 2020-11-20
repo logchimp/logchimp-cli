@@ -156,10 +156,4 @@ InstallCommand.description = `Install a brand new instance of LogChimp
 
 InstallCommand.usage = ['install [flags]']
 
-InstallCommand.examples = [
-  '$ logchimp install',
-  '$ logchimp install --local',
-  '$ logchimp install --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
-]
-
 module.exports = InstallCommand
