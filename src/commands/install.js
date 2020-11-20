@@ -10,6 +10,7 @@ const chalk = require('chalk')
 // utils
 const dirIsEmpty = require('../utils/dir-is-empty')
 const Config = require('../utils/config')
+const askQuestions = require('../utils/ask-questions')
 const yarn = require('../utils/yarn')
 const initServer = require('../utils/init-server')
 
@@ -22,21 +23,25 @@ class InstallCommand extends Command {
       this.error('Current directory is not empty, LogChimp cannot be installed here.')
     }
 
+    // Initialize a new Config instance for LogChimp site installation
+    const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
+
+    const setupConfiguration = await askQuestions()
+    config.set(setupConfiguration).save()
+
+    const configuration = config.values
 
     // Check for database configuration
-    const dbConfig = (Boolean(flags.dbname) && Boolean(flags.dbuser))
+    const dbConfig = (Boolean(configuration.database.name) && Boolean(configuration.database.user))
     if (!dbConfig) {
       this.error('Database configuration not provided, to learn more run \'logchimp install --help\'')
     }
 
     // Check for database SSL
-    if (flags.local) {
+    if (configuration.local) {
       process.env.NODE_ENV = 'development'
-      flags.dbssl = false
+      configuration.database.ssl = false
     }
-
-    // Initialize a new Config instance for LogChimp site installation
-    const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
     const releaseLink = 'https://github.com/logchimp/logchimp/archive/master.zip'
     const zipFileName = 'logchimp.zip'
@@ -91,7 +96,7 @@ class InstallCommand extends Command {
       },
       {
         title: 'Setting up LogChimp',
-        enabled: () => !flags.local,
+        enabled: () => !configuration.local,
         task: () => {
           return new Listr([
             {
@@ -114,7 +119,7 @@ class InstallCommand extends Command {
       },
       {
         title: 'Starting LogChimp',
-        enabled: () => !flags.local,
+        enabled: () => !configuration.local,
         task: () => {
           return new Listr([
             ...initServer(),
@@ -126,7 +131,7 @@ class InstallCommand extends Command {
     try {
       await tasks.run()
 
-      if (flags.local) {
+      if (configuration.local) {
         this.log('')
         this.log(chalk.gray('--------------------'))
         this.log('')
