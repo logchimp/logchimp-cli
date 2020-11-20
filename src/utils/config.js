@@ -24,22 +24,24 @@ class Config {
 	 * Sets a value in the config.
 	 * If 'value' is null, removes the key from the config
 	 *
-	 * @param {string} key Property path using dot notation
-	 * @param {string} value Property value
-	 * @returns {Class} Config instance
+	 * @param {string} key Key to set
+	 * @param {any} value Value to set at `key
+	 * @returns {Class} This Config instance
 	 */
   set(key, value) {
-    if (!key) {
-      throw new Error('key not found')
+    if (_.isPlainObject(key)) {
+      Object.assign(this.values, key)
+      return this
     }
 
-    if (!value) {
-      throw new Error('value not found')
+    // Setting a value to null removes it from the config
+    if (value === null) {
+      delete this.values[key]
+      return this
     }
 
     _.set(this.values, key, value)
-    fs.writeJSONSync(this.file, this.values, {spaces: 2})
-    return true
+    return this
   }
 
   /**

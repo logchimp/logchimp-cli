@@ -24,7 +24,7 @@ class ConfigSetCommand extends Command {
     }
 
     if (flags.key && flags.value) {
-      config.set(flags.key, flags.value)
+      config.set(flags.key, flags.value).save()
     } else {
       this.warn('You have passed invalid key or value')
     }
