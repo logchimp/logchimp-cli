@@ -9,6 +9,9 @@
   <a href="https://npmjs.org/package/logchimp-cli">
     <img src="https://img.shields.io/npm/dw/logchimp-cli.svg" alt="Downloads/week" />
   </a>
+  <a href="https://github.com/logchimp/logchimp-cli/actions?query=workflow%3ATest">
+    <img src="https://github.com/logchimp/logchimp-cli/workflows/Test/badge.svg" alt="Test badge status" />
+  </a>
 </p>
 
 <h3 align="center">
