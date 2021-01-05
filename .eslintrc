@@ -1,3 +1,12 @@
 {
-  "extends": "oclif"
+	"extends": "oclif",
+	"overrides": [
+		{
+			"files": ["test/**/*.spec.js"],
+			"env": {
+				"jest": true
+			},
+			"plugins": ["jest"]
+		}
+	]
 }
