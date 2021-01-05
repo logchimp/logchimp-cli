@@ -63,7 +63,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint .",
     "prepack": "oclif-dev manifest && oclif-dev readme",
-    "test": "jest ./test/**/*.spec.js",
+    "test": "jest ./tests/**/*.spec.js",
     "version": "oclif-dev readme && git add README.md"
   }
 }
