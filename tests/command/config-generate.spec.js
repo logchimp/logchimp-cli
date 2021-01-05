@@ -68,7 +68,7 @@ describe('config:generate command', () => {
       await runCommand(['config:generate'])
       const command = await runCommand(['config:generate', '--force'])
 
-      expect(command.stderr).toBe(' ›   Warning: This will overwrite the exisiting configuration file, if present.')
+      expect(command.stderr).toContain('Warning: This will overwrite the exisiting configuration file, if present.')
 
       // Is config file is not empty?
       const currentDirectory = await process.cwd()
