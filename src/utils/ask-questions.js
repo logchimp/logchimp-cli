@@ -110,12 +110,15 @@ const askQuestions = async () => {
 
     // mail
     {
-      type: 'list',
+      type: 'input',
       name: 'mail.service',
       message: 'Select a mail service of your choice',
-      choices: [
-        'mailgun',
-      ],
+      validate: answer => {
+        if (_.isString(answer) && answer) {
+          return true
+        }
+        return 'Please enter a valid mail service name'
+      },
     },
     {
       type: 'input',
