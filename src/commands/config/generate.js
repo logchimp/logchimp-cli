@@ -1,11 +1,11 @@
 const {Command, flags} = require('@oclif/command')
 const path = require('path')
-const inquirer = require('inquirer')
 const omgopass = require('omgopass')
 const _ = require('lodash')
 
 // utils
 const Config = require('../../utils/config')
+const askQuestions = require('../../utils/ask-questions')
 
 class ConfigGenerateCommand extends Command {
   async run() {
@@ -26,123 +26,40 @@ class ConfigGenerateCommand extends Command {
       return
     }
 
-    // generate random password
-    const generateDatabasePassword = omgopass()
-    const generateSecretKey = omgopass({
-      minSyllableLength: 10,
-    })
-
-    const configDefaults = {
-      database: {
-        host: 'localhost',
-        user: 'logchimp',
-        password: generateDatabasePassword,
-        name: 'logchimp',
-        port: 5432,
-        ssl: true,
-      },
-      server: {
-        port: 3000,
-        secretkey: generateSecretKey,
-      },
-    }
-
-    // Check for --defaults flag
-    if (flags.defaults) {
-      config.set(configDefaults).save()
+    // Check for --interactive flag
+    if (flags.interactive) {
+      const generateConfig = await askQuestions()
+      config.set(generateConfig).save()
       this.log('LogChimp configuration file succesfully created.')
       return
     }
 
-    const generateConfig = await inquirer.prompt([
-      // server
-      {
-        type: 'input',
-        name: 'server.port',
-        message: 'Server port to listen on',
-        default: configDefaults.server.port,
-        validate: answer => {
-          // Check port is not empty and is number
-          const isNumber = !isNaN(answer)
-          if (answer !== '') if (isNumber) return true
+    // generate random password
+    let generatePassword = () => {
+      return omgopass({
+        minSyllableLength: 12,
+      })
+    }
 
-          return 'Please enter a correct port'
-        },
+    const generateConfig = {
+      local: flags.local,
+      port: flags.port,
+      secretkey: flags.secretkey ? flags.secretkey : generatePassword(),
+      database: {
+        host: flags.dbhost,
+        port: flags.dbport,
+        user: flags.dbuser,
+        password: flags.dbpass,
+        ssl: flags.dbssl,
       },
-      {
-        type: 'input',
-        name: 'server.secretkey',
-        message: 'Secret key for password validation (default to auto generate random string)',
-        filter: answer => {
-          // Return auto generated secretKey on empty answer
-          if (answer === '') return generateSecretKey
-          return answer
-        },
+      mail: {
+        service: flags.mailservice,
+        host: flags.mailhost,
+        port: flags.mailport,
+        user: flags.mailuser,
+        password: flags.mailpass ? flags.mailpass : generatePassword(),
       },
-      // database
-      {
-        type: 'input',
-        name: 'database.host',
-        message: 'Database host',
-        default: configDefaults.database.host,
-        validate: answer => {
-          const isString = isNaN(answer)
-
-          // Warn for special characters
-          const removeSpecialCharacters = answer.match(/[^.\w\s]/gi)
-          if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
-
-          if (isString) return true
-          return 'Please enter a valid host'
-        },
-      },
-      {
-        type: 'input',
-        name: 'database.password',
-        message: 'Database password (default auto generate random password)',
-        filter: answer => {
-          // Return auto generated password on empty answer
-          if (answer === '') return generateDatabasePassword
-          return answer
-        },
-      },
-      {
-        type: 'input',
-        name: 'database.name',
-        message: 'Database name',
-        default: configDefaults.database.name,
-        validate: answer => {
-          const isString = isNaN(answer)
-
-          // Warn for special characters
-          const removeSpecialCharacters = answer.match(/[^\w\s]/gi)
-          if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
-
-          if (isString) return true
-          return 'Please enter a valid name'
-        },
-      },
-      {
-        type: 'input',
-        name: 'database.port',
-        message: 'Database port',
-        default: configDefaults.database.port,
-        validate: answer => {
-          // Check port is not empty and is number
-          const isNumber = !isNaN(answer)
-          if (answer !== '') if (isNumber) return true
-
-          return 'Please enter a correct port'
-        },
-      },
-      {
-        type: 'confirm',
-        name: 'database.ssl',
-        message: 'Enable SSL for database (default true for production)',
-        choices: ['true', 'false'],
-        default: configDefaults.database.ssl,
-      },
-    ])
+    }
 
     config.set(generateConfig).save()
     this.log('LogChimp configuration file succesfully created.')
@@ -153,15 +70,68 @@ ConfigGenerateCommand.description = `Generate a new configuration for a LogChimp
 `
 
 ConfigGenerateCommand.flags = {
-  defaults: flags.boolean({
-    char: 'd',
-    description: 'Use defaults',
-    default: false,
+  interactive: flags.boolean({
+    char: 'i',
+    description: 'Use interactive mode',
   }),
   force: flags.boolean({
     char: 'f',
     description: 'Overwrite the existing configuration file, if present.',
     default: false,
+  }),
+  local: flags.boolean({
+    description: 'Run LogChimp for local development/testing',
+    default: false,
+  }),
+
+  // server
+  port: flags.integer({
+    description: 'Server port to listen on',
+    default: 3000,
+  }),
+  secretkey: flags.string({
+    description: 'Secret key for password validation (default auto generate random string)',
+  }),
+
+  // database flags
+  dbhost: flags.string({
+    description: 'Database host',
+  }),
+  dbuser: flags.string({
+    description: 'Database username',
+  }),
+  dbpass: flags.string({
+    description: 'Database password (default auto generate random password)',
+  }),
+  dbname: flags.string({
+    description: 'Database name',
+  }),
+  dbport: flags.integer({
+    description: 'Database port',
+    default: 5432,
+  }),
+  dbssl: flags.boolean({
+    description: 'Enable SSL for database (default true for production)',
+    default: true,
+    allowNo: true,
+  }),
+
+  // mail flags
+  mailservice: flags.string({
+    description: 'Mail service e.g. MailGun',
+  }),
+  mailuser: flags.string({
+    description: 'Mail service SMTP username',
+  }),
+  mailpass: flags.string({
+    description: 'Mail service SMTP password (default auto generate random password)',
+  }),
+  mailhost: flags.string({
+    description: 'Mail service SMTP hostname',
+  }),
+  mailport: flags.integer({
+    description: 'Mail service SMTP port',
+    default: 587,
   }),
 }
 
@@ -169,7 +139,7 @@ ConfigGenerateCommand.usage = ['config:generate [flags]']
 
 ConfigGenerateCommand.examples = [
   '$ logchimp config:generate --force',
-  '$ logchimp config:generate --defaults --force',
+  '$ logchimp config:generate --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
 ]
 
 module.exports = ConfigGenerateCommand
