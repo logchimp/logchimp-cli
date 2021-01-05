@@ -25,9 +25,9 @@ describe('config:get command', () => {
     )
   })
 
-  it('get \'secretkey\' value', async () => {
+  it('get \'database.port\' value', async () => {
     const command = await runCommand(['config:get', '-k=database.port'])
 
-    expect(command.stdout).toBe(5432)
+    expect(command.stdout).toBe('5432')
   })
 })
