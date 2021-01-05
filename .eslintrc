@@ -2,7 +2,7 @@
 	"extends": "oclif",
 	"overrides": [
 		{
-			"files": ["test/**/*.spec.js"],
+			"files": ["tests/**/*.spec.js"],
 			"env": {
 				"jest": true
 			},
