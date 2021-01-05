@@ -83,6 +83,8 @@ ConfigGenerateCommand.flags = {
     description: 'Run LogChimp for local development/testing',
     default: false,
   }),
+
+  // server
   port: flags.integer({
     description: 'Server port to listen on',
     default: 3000,
@@ -137,7 +139,7 @@ ConfigGenerateCommand.usage = ['config:generate [flags]']
 
 ConfigGenerateCommand.examples = [
   '$ logchimp config:generate --force',
-  '$ logchimp config:generate --defaults --force',
+  '$ logchimp config:generate --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
 ]
 
 module.exports = ConfigGenerateCommand
