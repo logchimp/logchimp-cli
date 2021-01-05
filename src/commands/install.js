@@ -39,6 +39,7 @@ class InstallCommand extends Command {
 
     // Check for database SSL
     if (configuration.local) {
+      // eslint-disable-next-line require-atomic-updates
       process.env.NODE_ENV = 'development'
       configuration.database.ssl = false
     }
