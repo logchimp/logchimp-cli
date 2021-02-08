@@ -61,7 +61,7 @@ const askQuestions = async () => {
         const isString = isNaN(answer)
 
         // Warn for special characters
-        const removeSpecialCharacters = answer.match(/[^.\w\s]/gi)
+        const removeSpecialCharacters = answer.match(/[^.\w\s-]/gi)
         if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
 
         if (isString) return true
@@ -128,7 +128,7 @@ const askQuestions = async () => {
         const isString = isNaN(answer)
 
         // Warn for special characters
-        const removeSpecialCharacters = answer.match(/[^.\w\s]/gi)
+        const removeSpecialCharacters = answer.match(/[^.\w\s-]/gi)
         if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
 
         if (isString) return true
