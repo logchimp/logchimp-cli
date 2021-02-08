@@ -12,6 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@oclif/plugin-warn-if-update-available": "^1.7.0",
+    "@octokit/rest": "^18.1.0",
     "chalk": "^4.1.0",
     "decompress": "^4.2.1",
     "execa": "^5.0.0",
