@@ -89,7 +89,7 @@ ConfigGenerateCommand.flags = {
     description: 'Server port to listen on',
     default: 3000,
   }),
-  secretkey: flags.string({
+  secretKey: flags.string({
     description: 'Secret key for password validation (default auto generate random string)',
   }),
 
