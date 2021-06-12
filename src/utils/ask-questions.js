@@ -32,10 +32,10 @@ const askQuestions = async () => {
     },
     {
       type: 'input',
-      name: 'server.secretKey',
+      name: 'server.secretkey',
       message: 'Secret key for password validation (default to auto-generate random secret key)',
       filter: answer => {
-        // Return auto generated secretKey on empty answer
+        // Return auto generated secretkey on empty answer
         if (answer === '') return generatePassword
         return answer
       },
