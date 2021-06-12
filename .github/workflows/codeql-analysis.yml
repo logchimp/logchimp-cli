@@ -7,6 +7,9 @@ name: "CodeQL"
 
 on:
   push:
+    branches:
+      - '!dependabot/**'
+  pull_request:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
