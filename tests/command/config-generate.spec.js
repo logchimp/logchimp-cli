@@ -31,7 +31,7 @@ describe('config:generate command', () => {
     })
 
     it('with flags', async () => {
-      const command = await runCommand(['config:generate', '--port=80', '--secretKey=mySecretKey', '--dbhost=postgres-db.logchimp.codecarrot.net', '--dbuser=pg_db_user', '--dbpass=myDatabasePassword', '--dbname=pg_db', '--dbport=51000', '--no-dbssl', '--mailservice=awesomeMailService', '--mailuser=mail_user', '--mailpass=myMailPassword', '--mailhost=mail-server.logchimp.codecarrot.net', '--mailport=587'])
+      const command = await runCommand(['config:generate', '--port=80', '--secretkey=mySecretKey', '--dbhost=postgres-db.logchimp.codecarrot.net', '--dbuser=pg_db_user', '--dbpass=myDatabasePassword', '--dbname=pg_db', '--dbport=51000', '--no-dbssl', '--mailservice=awesomeMailService', '--mailuser=mail_user', '--mailpass=myMailPassword', '--mailhost=mail-server.logchimp.codecarrot.net', '--mailport=587'])
 
       expect(command.stdout).toBe('LogChimp configuration file succesfully created.')
 
@@ -44,7 +44,7 @@ describe('config:generate command', () => {
       // server
       expect(config.local).toBe(false)
       expect(config.port).toBe(80)
-      expect(config.secretKey).toBe('mySecretKey')
+      expect(config.secretkey).toBe('mySecretKey')
       // database
       expect(config.database.host).toBe('postgres-db.logchimp.codecarrot.net')
       expect(config.database.port).toBe(51000)
