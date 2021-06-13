@@ -7,13 +7,13 @@ const CLI_PATH = path.resolve(__dirname, '..', '..', 'bin', 'run')
 const runCommand = (args, options) => execa(CLI_PATH, args, options)
 
 describe('config:generate command', () => {
-  describe('generate config', () => {
-    beforeEach(async () => {
-      // fail-safe: delete any existing logchimp config at root directory
-      const currentDirectory = await process.cwd()
-      await fs.removeSync(`${currentDirectory}/logchimp.config.json`)
-    })
+  beforeEach(async () => {
+    // fail-safe: delete any existing logchimp config at root directory
+    const currentDirectory = await process.cwd()
+    await fs.removeSync(`${currentDirectory}/logchimp.config.json`)
+  })
 
+  describe('generate config', () => {
     it('with default values', async () => {
       const command = await runCommand(['config:generate'])
 
@@ -66,6 +66,7 @@ describe('config:generate command', () => {
     it('with --force flag', async () => {
       // create config file with defaults
       await runCommand(['config:generate'])
+
       const command = await runCommand(['config:generate', '--force'])
 
       expect(command.stderr).toContain('Warning: This will overwrite the exisiting configuration file, if present.')
@@ -81,6 +82,9 @@ describe('config:generate command', () => {
   })
 
   it('config already exists', async () => {
+    // generate config file
+    await runCommand(['config:generate'])
+
     const command = await runCommand(['config:generate'])
 
     expect(command.stdout).toBe('Logchimp configuration file already exists.')
