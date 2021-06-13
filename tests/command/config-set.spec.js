@@ -6,12 +6,15 @@ const CLI_PATH = path.resolve(__dirname, '..', '..', 'bin', 'run')
 const runCommand = (args, options) => execa(CLI_PATH, args, options)
 
 describe('config:set command', () => {
-  it('config file missing error', async () => {
-    // delete any existing logchimp config at root directory
+  beforeEach(async () => {
+    // fail-safe: delete any existing logchimp config at root directory
     const currentDirectory = await process.cwd()
     await fs.removeSync(`${currentDirectory}/logchimp.config.json`)
+  })
 
+  it('config file missing error', async () => {
     const command = await runCommand(['config:set'])
+
     expect(command.stderr).toContain(
       "Warning: Logchimp configuration file doesn't exist.",
     )
@@ -20,6 +23,7 @@ describe('config:set command', () => {
   it('--key & --value flag is missing', async () => {
     // generate config file
     await runCommand(['config:generate'])
+
     const command = await runCommand(['config:set'])
 
     expect(command.stderr).toContain(
@@ -28,6 +32,9 @@ describe('config:set command', () => {
   })
 
   it('update \'secretkey\' value', async () => {
+    // generate config file
+    await runCommand(['config:generate'])
+
     await runCommand(['config:set', '-k=secretkey', '-v=mySecretKey'])
 
     const currentDirectory = await process.cwd()
