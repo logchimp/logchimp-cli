@@ -34,9 +34,9 @@
 
 ## Basic setup
 
-* `npm install -g logchimp-cli`
-* `logchimp install [flags]` _(for production)_
-* `logchimp install --local` _(for a local setup, useful for development/testing)_
+- `npm install -g logchimp-cli`
+- `logchimp install [flags]` _(for production)_
+- `logchimp install --local` _(for a local setup, useful for development/testing)_
 
 ## Project Goals
 
@@ -50,10 +50,10 @@ Read the [setup guide](https://logchimp.codecarrot.net/docs/install/) to learn o
 
 We officially recommend the following stack for production installs.
 
-* Ubuntu 16.04 or Ubuntu 18.04
-* NGINX
-* Node.js 12
-* PostgreSQL 10 or 12
-* Systemd
+- Ubuntu 16.04 or Ubuntu 18.04
+- NGINX
+- Node.js 12
+- PostgreSQL 10 or 12
+- Systemd
 
 Our primary focus is only to support this stack, to ensure that everyone that uses this stack can set up their LogChimp site. As with every additional option for configuration or additional environment creates exponential complexities and maintenance overhead.

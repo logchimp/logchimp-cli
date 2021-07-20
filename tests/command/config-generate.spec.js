@@ -17,29 +17,38 @@ describe('config:generate command', () => {
     it('with default values', async () => {
       const command = await runCommand(['config:generate'])
 
-      expect(command.stdout).toBe(
-        'LogChimp configuration file succesfully created.',
-      )
+      expect(command.stdout).toBe('LogChimp configuration file succesfully created.')
 
       // Is config file empty?
       const currentDirectory = await process.cwd()
-      const config = fs.readJsonSync(
-        `${currentDirectory}/logchimp.config.json`,
-      )
+      const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
       const isConfigEmpty = _.isEmpty(config)
       expect(isConfigEmpty).toBe(false)
     })
 
     it('with flags', async () => {
-      const command = await runCommand(['config:generate', '--port=80', '--secretkey=mySecretKey', '--dbhost=postgres-db.logchimp.codecarrot.net', '--dbuser=pg_db_user', '--dbpass=myDatabasePassword', '--dbname=pg_db', '--dbport=51000', '--no-dbssl', '--mailservice=awesomeMailService', '--mailuser=mail_user', '--mailpass=myMailPassword', '--mailhost=mail-server.logchimp.codecarrot.net', '--mailport=587'])
+      const command = await runCommand([
+        'config:generate',
+        '--port=80',
+        '--secretkey=mySecretKey',
+        '--dbhost=postgres-db.logchimp.codecarrot.net',
+        '--dbuser=pg_db_user',
+        '--dbpass=myDatabasePassword',
+        '--dbname=pg_db',
+        '--dbport=51000',
+        '--no-dbssl',
+        '--mailservice=awesomeMailService',
+        '--mailuser=mail_user',
+        '--mailpass=myMailPassword',
+        '--mailhost=mail-server.logchimp.codecarrot.net',
+        '--mailport=587',
+      ])
 
       expect(command.stdout).toBe('LogChimp configuration file succesfully created.')
 
       // validate config data
       const currentDirectory = await process.cwd()
-      const config = fs.readJsonSync(
-        `${currentDirectory}/logchimp.config.json`,
-      )
+      const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
 
       // server
       expect(config.local).toBe(false)
@@ -73,9 +82,7 @@ describe('config:generate command', () => {
 
       // Is config file is not empty?
       const currentDirectory = await process.cwd()
-      const config = fs.readJsonSync(
-        `${currentDirectory}/logchimp.config.json`,
-      )
+      const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
       const isConfigEmpty = _.isEmpty(config)
       expect(isConfigEmpty).toBe(false)
     })

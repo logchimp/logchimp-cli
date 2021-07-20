@@ -3,10 +3,10 @@ const _ = require('lodash')
 
 class Config {
   /**
-	 * Constructs the config instance
-	 *
-	 * @param {string} filename Filename to load
-	 */
+   * Constructs the config instance
+   *
+   * @param {string} filename Filename to load
+   */
   constructor(filename) {
     if (!filename) {
       throw new Error('Config file not specified!')
@@ -21,13 +21,13 @@ class Config {
   }
 
   /**
-	 * Sets a value in the config.
-	 * If 'value' is null, removes the key from the config
-	 *
-	 * @param {string} key Key to set
-	 * @param {any} value Value to set at `key
-	 * @returns {Class} This Config instance
-	 */
+   * Sets a value in the config.
+   * If 'value' is null, removes the key from the config
+   *
+   * @param {string} key Key to set
+   * @param {any} value Value to set at `key
+   * @returns {Class} This Config instance
+   */
   set(key, value) {
     if (_.isPlainObject(key)) {
       Object.assign(this.values, key)
@@ -45,19 +45,19 @@ class Config {
   }
 
   /**
-	 * Saves the config file to disk
-	 * @returns {Boolean} Return boolean after saving
-	 */
+   * Saves the config file to disk
+   * @returns {Boolean} Return boolean after saving
+   */
   save() {
-    fs.writeJSONSync(this.file, this.values, {spaces: 2})
+    fs.writeJSONSync(this.file, this.values, { spaces: 2 })
     return true
   }
 
   /**
-	 * Checks whether or not a config file exists
-	 * @param {string} filename absolute path to config file
-	 * @returns {object} return parsed json format data from config file
-	 */
+   * Checks whether or not a config file exists
+   * @param {string} filename absolute path to config file
+   * @returns {object} return parsed json format data from config file
+   */
   static exists(filename) {
     try {
       const result = fs.readJsonSync(filename)

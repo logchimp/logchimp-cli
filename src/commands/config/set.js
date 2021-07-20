@@ -1,4 +1,4 @@
-const {Command, flags} = require('@oclif/command')
+const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const _ = require('lodash')
 
@@ -10,7 +10,7 @@ class ConfigSetCommand extends Command {
     // check for config file
     const currentDirectory = await process.cwd()
 
-    const {flags} = this.parse(ConfigSetCommand)
+    const { flags } = this.parse(ConfigSetCommand)
 
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
@@ -19,7 +19,7 @@ class ConfigSetCommand extends Command {
 
     // Warn on configuration file not found
     if (isConfigEmpty) {
-      this.warn('Logchimp configuration file doesn\'t exist.')
+      this.warn("Logchimp configuration file doesn't exist.")
       return
     }
 
@@ -35,8 +35,8 @@ ConfigSetCommand.description = `Set a specific value in the configuration file
 `
 
 ConfigSetCommand.flags = {
-  key: flags.string({char: 'k', description: 'name to print'}),
-  value: flags.string({char: 'v', description: 'name to print'}),
+  key: flags.string({ char: 'k', description: 'name to print' }),
+  value: flags.string({ char: 'v', description: 'name to print' }),
 }
 
 module.exports = ConfigSetCommand

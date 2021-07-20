@@ -1,20 +1,20 @@
-const {Command, flags} = require('@oclif/command')
+const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const fs = require('fs-extra')
 const inquirer = require('inquirer')
-const {Listr} = require('listr2')
+const { Listr } = require('listr2')
 
 class UninstallCommand extends Command {
   async run() {
-    const {flags} = this.parse(UninstallCommand)
+    const { flags } = this.parse(UninstallCommand)
     const currentDirectory = await process.cwd()
 
     /**
-		 * Is LogChimp is installed in current directory
-		 *
-		 * We're validating the LogChimp installation
-		 * by checking for logchimp.config.json existance
-		 */
+     * Is LogChimp is installed in current directory
+     *
+     * We're validating the LogChimp installation
+     * by checking for logchimp.config.json existance
+     */
     const configurationFile = await fs.pathExistsSync(path.join(currentDirectory, 'logchimp.config.json'))
     if (!configurationFile) {
       this.error('Working directory is not a recognisable LogChimp installation.')
@@ -22,7 +22,9 @@ class UninstallCommand extends Command {
 
     // Skip asking question with --force flag
     if (!flags.force) {
-      this.warn('Running this command will delete all of your images, data, any files related to this LogChimp instance, and the contents of this folder!')
+      this.warn(
+        'Running this command will delete all of your images, data, any files related to this LogChimp instance, and the contents of this folder!'
+      )
 
       const confirm = await inquirer.prompt([
         {
@@ -72,7 +74,9 @@ UninstallCommand.description = `Remove a LogChimp instance and any related confi
 
 UninstallCommand.flags = {
   force: flags.boolean({
-    char: 'f', description: 'Skip delete confirmation', default: false,
+    char: 'f',
+    description: 'Skip delete confirmation',
+    default: false,
   }),
 }
 

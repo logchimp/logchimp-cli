@@ -1,5 +1,5 @@
 {
-	"extends": "oclif",
+	"extends": ["oclif", "prettier"],
 	"overrides": [
 		{
 			"files": ["tests/**/*.spec.js"],
