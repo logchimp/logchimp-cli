@@ -22,7 +22,7 @@ const askQuestions = async () => {
       name: 'server.port',
       message: 'Server port to listen on',
       default: 3000,
-      validate: answer => {
+      validate: (answer) => {
         // Check port is not empty and is number
         const isNumber = !isNaN(answer)
         if (answer !== '') if (isNumber) return true
@@ -34,7 +34,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'server.secretkey',
       message: 'Secret key for password validation (default to auto-generate random secret key)',
-      filter: answer => {
+      filter: (answer) => {
         // Return auto generated secretkey on empty answer
         if (answer === '') return generatePassword
         return answer
@@ -46,7 +46,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'database.name',
       message: 'Database name',
-      validate: answer => {
+      validate: (answer) => {
         if (_.isString(answer) && answer) {
           return true
         }
@@ -57,7 +57,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'database.host',
       message: 'Database host',
-      validate: answer => {
+      validate: (answer) => {
         const isString = isNaN(answer)
 
         // Warn for special characters
@@ -72,7 +72,7 @@ const askQuestions = async () => {
       name: 'database.port',
       message: 'Database port',
       default: 5432,
-      validate: answer => {
+      validate: (answer) => {
         // Check port is not empty and is number
         const isNumber = !isNaN(answer)
         if (answer !== '') if (isNumber) return true
@@ -84,7 +84,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'database.user',
       message: 'Database username',
-      validate: answer => {
+      validate: (answer) => {
         if (_.isString(answer) && answer) {
           return true
         }
@@ -95,7 +95,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'database.password',
       message: 'Database password (default auto-generate random password)',
-      filter: answer => {
+      filter: (answer) => {
         // Return auto generated password on empty answer
         if (answer === '') return generatePassword
         return answer
@@ -113,7 +113,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'mail.service',
       message: 'Select a mail service of your choice',
-      validate: answer => {
+      validate: (answer) => {
         if (_.isString(answer) && answer) {
           return true
         }
@@ -124,7 +124,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'mail.host',
       message: 'Mail hostname',
-      validate: answer => {
+      validate: (answer) => {
         const isString = isNaN(answer)
 
         // Warn for special characters
@@ -139,7 +139,7 @@ const askQuestions = async () => {
       name: 'mail.port',
       message: 'Mail port',
       default: 587,
-      validate: answer => {
+      validate: (answer) => {
         // Check port is not empty and is number
         const isNumber = !isNaN(answer)
         if (answer !== '') if (isNumber) return true
@@ -151,7 +151,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'mail.username',
       message: 'Mail username',
-      validate: answer => {
+      validate: (answer) => {
         if (_.isString(answer) && answer) {
           return true
         }
@@ -162,7 +162,7 @@ const askQuestions = async () => {
       type: 'input',
       name: 'mail.password',
       message: 'Mail password (default auto-generate random password)',
-      filter: answer => {
+      filter: (answer) => {
         // Return auto generated password on empty answer
         if (answer === '') return generatePassword
         return answer

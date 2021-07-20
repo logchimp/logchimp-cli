@@ -15,7 +15,7 @@ describe('config:get command', () => {
   it('config file missing error', async () => {
     const command = await runCommand(['config:get'])
 
-    expect(command.stderr).toContain('Warning: Logchimp configuration file doesn\'t exist.')
+    expect(command.stderr).toContain("Warning: Logchimp configuration file doesn't exist.")
   })
 
   it('--key flag is missing', async () => {
@@ -24,12 +24,10 @@ describe('config:get command', () => {
 
     const command = await runCommand(['config:get'])
 
-    expect(command.stdout).toContain(
-      'Pass the --key flag to get the value',
-    )
+    expect(command.stdout).toContain('Pass the --key flag to get the value')
   })
 
-  it('get \'database.port\' value', async () => {
+  it("get 'database.port' value", async () => {
     // generate config file
     await runCommand(['config:generate'])
 

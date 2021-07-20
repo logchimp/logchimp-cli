@@ -6,13 +6,13 @@ const fsExtra = require('fs-extra')
  * @param {string} directory current working directory
  * @returns {undefined}
  */
-const removeDotFiles = directory => {
+const removeDotFiles = (directory) => {
   fs.readdir(directory, (err, list) => {
     if (err) {
       return err
     }
 
-    const dotFiles = list.filter(item => {
+    const dotFiles = list.filter((item) => {
       if (!item.split('.')[0]) {
         return item
       }

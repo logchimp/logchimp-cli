@@ -1,4 +1,4 @@
-const {Command, flags} = require('@oclif/command')
+const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const _ = require('lodash')
 
@@ -10,7 +10,7 @@ class ConfigGetCommand extends Command {
     // check for config file
     const currentDirectory = await process.cwd()
 
-    const {flags} = this.parse(ConfigGetCommand)
+    const { flags } = this.parse(ConfigGetCommand)
 
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
@@ -19,7 +19,7 @@ class ConfigGetCommand extends Command {
 
     // Warn on configuration file not found
     if (isConfigEmpty) {
-      this.warn('Logchimp configuration file doesn\'t exist.')
+      this.warn("Logchimp configuration file doesn't exist.")
       return
     }
 
@@ -35,7 +35,7 @@ ConfigGetCommand.description = `Get a specific value from the configuration file
 `
 
 ConfigGetCommand.flags = {
-  key: flags.string({char: 'k', description: 'key of which you want to get the value'}),
+  key: flags.string({ char: 'k', description: 'key of which you want to get the value' }),
 }
 
 ConfigGetCommand.usage = ['config:get [flags]']

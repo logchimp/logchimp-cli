@@ -1,5 +1,5 @@
-const {Command} = require('@oclif/command')
-const {Listr} = require('listr2')
+const { Command } = require('@oclif/command')
+const { Listr } = require('listr2')
 const path = require('path')
 const chalk = require('chalk')
 
@@ -15,7 +15,7 @@ class StartCommand extends Command {
 
     if (!configFileExist) {
       this.warn('Working directory is not a recognisable LogChimp installation.')
-      this.log('Run \'logchimp start\' again within a folder where LogChimp is installed with LogChimp CLI.')
+      this.log("Run 'logchimp start' again within a folder where LogChimp is installed with LogChimp CLI.")
       return
     }
 
@@ -23,9 +23,7 @@ class StartCommand extends Command {
       {
         title: 'Starting LogChimp',
         task: () => {
-          return new Listr([
-            ...initServer(),
-          ])
+          return new Listr([...initServer()])
         },
       },
     ])
@@ -38,7 +36,7 @@ class StartCommand extends Command {
       this.log(chalk.gray('--------------------'))
       this.log('')
       this.log(chalk.green('LogChimp is installed successfully!'))
-      this.log(chalk.yellow.dim(('Ctrl+C to shut down')))
+      this.log(chalk.yellow.dim('Ctrl+C to shut down'))
     } catch (error) {
       this.error(error)
     }

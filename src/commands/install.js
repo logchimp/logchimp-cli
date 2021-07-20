@@ -1,8 +1,8 @@
-const {Command} = require('@oclif/command')
+const { Command } = require('@oclif/command')
 const fs = require('fs-extra')
 const decompress = require('decompress')
-const {Listr} = require('listr2')
-const {Observable} = require('rxjs')
+const { Listr } = require('listr2')
+const { Observable } = require('rxjs')
 const execa = require('execa')
 const path = require('path')
 const chalk = require('chalk')
@@ -32,9 +32,9 @@ class InstallCommand extends Command {
     const configuration = config.values
 
     // Check for database configuration
-    const dbConfig = (Boolean(configuration.database.name) && Boolean(configuration.database.user))
+    const dbConfig = Boolean(configuration.database.name) && Boolean(configuration.database.user)
     if (!dbConfig) {
-      this.error('Database configuration not provided, to learn more run \'logchimp install --help\'')
+      this.error("Database configuration not provided, to learn more run 'logchimp install --help'")
     }
 
     // Check for database SSL
@@ -51,7 +51,7 @@ class InstallCommand extends Command {
       {
         title: 'Downloading LogChimp',
         task: () => {
-          return new Observable(async subscriber => {
+          return new Observable(async (subscriber) => {
             try {
               // download source using curl command
               await execa('curl', [releaseLink, '-L', '-o', zipFileName])
@@ -105,13 +105,15 @@ class InstallCommand extends Command {
               task: () => {
                 const command = execa('yarn', ['run', 'frontend:build'])
 
-                return new Observable(subscribe => {
+                return new Observable((subscribe) => {
                   subscribe.next('Building for production...')
-                  command.then(() => {
-                    subscribe.complete()
-                  }).catch(error => {
-                    subscribe.error(error)
-                  })
+                  command
+                    .then(() => {
+                      subscribe.complete()
+                    })
+                    .catch((error) => {
+                      subscribe.error(error)
+                    })
                 })
               },
             },
@@ -122,9 +124,7 @@ class InstallCommand extends Command {
         title: 'Starting LogChimp',
         enabled: () => !configuration.local,
         task: () => {
-          return new Listr([
-            ...initServer(),
-          ])
+          return new Listr([...initServer()])
         },
       },
     ])
@@ -144,7 +144,7 @@ class InstallCommand extends Command {
         this.log(chalk.gray('--------------------'))
         this.log('')
         this.log(chalk.green('LogChimp is installed successfully!'))
-        this.log(chalk.yellow.dim(('Ctrl+C to shut down')))
+        this.log(chalk.yellow.dim('Ctrl+C to shut down'))
       }
     } catch (error) {
       this.error(error)

@@ -1,4 +1,4 @@
-const {Command, flags} = require('@oclif/command')
+const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const omgopass = require('omgopass')
 const _ = require('lodash')
@@ -11,7 +11,7 @@ class ConfigGenerateCommand extends Command {
   async run() {
     const currentDirectory = await process.cwd()
 
-    const {flags} = this.parse(ConfigGenerateCommand)
+    const { flags } = this.parse(ConfigGenerateCommand)
 
     const config = new Config(path.join(currentDirectory, 'logchimp.config.json'))
 
