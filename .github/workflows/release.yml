@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: |
+          echo $VERSION_REF
+          echo ::set-output name=VERSION::${VERSION_REF/refs\/tags\/\v}
+        env:
+          VERSION_REF: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Set Auth Token
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+      - name: Install packages
+        run: yarn --pure-lockfile
+
+      - name: Tests
+        run: yarn test
+
+      - name: Prepack
+        run: yarn prepack
+
+      - name: Publish
+        run: yarn publish
