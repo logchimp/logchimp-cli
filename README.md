@@ -30,13 +30,7 @@
 	</a>
 </p>
 
-**NOTE:** If you're using v0.2.0, don't use `install`, `start`, `uninstall` commands, we're working on major changes _(which will be released in v0.3.0)_. You can look for [alternatives ways to deploy LogChimp](https://logchimp.codecarrot.net/docs/install).
-
-## Basic setup
-
-- `npm install -g logchimp-cli`
-- `logchimp install [flags]` _(for production)_
-- `logchimp install --local` _(for a local setup, useful for development/testing)_
+**NOTE:** You can look for [alternatives ways to deploy LogChimp](https://logchimp.codecarrot.net/docs/install).
 
 ## Project Goals
 
