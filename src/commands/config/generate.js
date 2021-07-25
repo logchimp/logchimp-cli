@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const omgopass = require('omgopass')
@@ -41,6 +42,36 @@ class ConfigGenerateCommand extends Command {
       })
     }
 
+    // Check if --env flag is present
+    if (flags.env) {
+      const generateConfig = {
+        server: {
+          port: parseInt(process.env.LOGCHIMP_SERVER_PORT) || 3000,
+          secretkey: process.env.LOGCHIMP_SECRET_KEY,
+        },
+        database: {
+          host: process.env.LOGCHIMP_PG_HOST,
+          port: parseInt(process.env.LOGCHIMP_PG_PORT) || 5432,
+          user: process.env.LOGCHIMP_PG_USER,
+          password: process.env.LOGCHIMP_PG_PASSWORD,
+          name: process.env.LOGCHIMP_PG_DATABASE,
+          // dotenv returns all environment variables as strings
+          ssl: process.env.LOGCHIMP_PG_SSL ? process.env.LOGCHIMP_PG_SSL === 'true' : true,
+        },
+        mail: {
+          service: process.env.LOGCHIMP_MAIL_SERVICE,
+          host: process.env.LOGCHIMP_MAIL_HOST,
+          port: parseInt(process.env.LOGCHIMP_MAIL_PORT) || 587,
+          user: process.env.LOGCHIMP_MAIL_USER,
+          password: process.env.LOGCHIMP_MAIL_PASSWORD,
+        },
+      }
+
+      config.set(generateConfig).save()
+      this.log('LogChimp configuration file succesfully created from environment variables.')
+      return
+    }
+
     const generateConfig = {
       local: flags.local,
       port: flags.port,
@@ -77,6 +108,10 @@ ConfigGenerateCommand.flags = {
   force: flags.boolean({
     char: 'f',
     description: 'Overwrite the existing configuration file, if present.',
+    default: false,
+  }),
+  env: flags.boolean({
+    description: 'Create configuration file from environment variables and .env file',
     default: false,
   }),
   local: flags.boolean({
