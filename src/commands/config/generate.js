@@ -111,7 +111,7 @@ ConfigGenerateCommand.flags = {
     default: false,
   }),
   env: flags.boolean({
-    description: 'Create configuration file from environment variables and .env file',
+    description: 'Create configuration file from environment variables',
     default: false,
   }),
   local: flags.boolean({
