@@ -180,6 +180,8 @@ ConfigGenerateCommand.usage = ['config:generate [flags]']
 ConfigGenerateCommand.examples = [
   '$ logchimp config:generate --force',
   '$ logchimp config:generate --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
+  '$ logchimp config:generate --interactive',
+  '$ logchimp config:generate --env',
 ]
 
 module.exports = ConfigGenerateCommand
