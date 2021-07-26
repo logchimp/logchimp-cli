@@ -55,13 +55,13 @@ class ConfigGenerateCommand extends Command {
           secretkey: process.env.LOGCHIMP_SECRET_KEY,
         },
         database: {
-          host: process.env.LOGCHIMP_PG_HOST,
-          port: parseInt(process.env.LOGCHIMP_PG_PORT) || 5432,
-          user: process.env.LOGCHIMP_PG_USER,
-          password: process.env.LOGCHIMP_PG_PASSWORD,
-          name: process.env.LOGCHIMP_PG_DATABASE,
+          host: process.env.LOGCHIMP_DB_HOST,
+          port: parseInt(process.env.LOGCHIMP_DB_PORT) || 5432,
+          user: process.env.LOGCHIMP_DB_USER,
+          password: process.env.LOGCHIMP_DB_PASSWORD,
+          name: process.env.LOGCHIMP_DB_DATABASE,
           // dotenv returns all environment variables as strings
-          ssl: process.env.LOGCHIMP_PG_SSL ? process.env.LOGCHIMP_PG_SSL === 'true' : true,
+          ssl: process.env.LOGCHIMP_DB_SSL ? process.env.LOGCHIMP_DB_SSL === 'true' : true,
         },
         mail: {
           service: process.env.LOGCHIMP_MAIL_SERVICE,
