@@ -27,6 +27,11 @@ class ConfigGenerateCommand extends Command {
       return
     }
 
+    // Throw an error if both --env and --interactive flags are present
+    if (flags.interactive && flags.env) {
+      this.error('You cannot use both --env and --interactive flag.')
+    }
+
     // Check for --interactive flag
     if (flags.interactive) {
       const generateConfig = await askQuestions()
