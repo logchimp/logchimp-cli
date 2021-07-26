@@ -96,4 +96,47 @@ describe('config:generate command', () => {
 
     expect(command.stdout).toBe('Logchimp configuration file already exists.')
   })
+
+  it('with both --env and --interactive present', async () => {
+    // verify this throws an error
+    expect.assertions(1)
+
+    // try to generate a config file
+    try {
+      await runCommand(['config:generate', '--env', '--interactive'])
+    } catch (error) {
+      expect(error.message).toContain('You cannot use both --env and --interactive flag.')
+    }
+  })
+
+  it('with --env flag', async () => {
+    const currentDirectory = await process.cwd()
+
+    //create .env file if not already present
+    const envIsPresent = fs.existsSync(`${currentDirectory}/.env`)
+
+    if (!envIsPresent) {
+      fs.writeFileSync(
+        `${currentDirectory}/.env`,
+        `LOGCHIMP_SERVER_PORT=3000
+LOGCHIMP_SECRET_KEY=secret-key
+LOGCHIMP_DB_HOST=localhost
+LOGCHIMP_DB_PORT=5432
+LOGCHIMP_DB_USER=logchimp
+LOGCHIMP_DB_PASSWORD=secret-password
+LOGCHIMP_DB_DATABASE=logchimpDB
+LOGCHIMP_DB_SSL=true
+LOGCHIMP_MAIL_SERVICE=service
+LOGCHIMP_MAIL_HOST=mail_host
+LOGCHIMP_MAIL_PORT=587
+LOGCHIMP_MAIL_USER=mail_username
+LOGCHIMP_MAIL_PASSWORD=mail_password`
+      )
+    }
+
+    // generate config file
+    const command = await runCommand(['config:generate', '--env'])
+
+    expect(command.stdout).toContain('LogChimp configuration file succesfully created from environment variables')
+  })
 })
