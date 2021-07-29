@@ -12,7 +12,7 @@ const askQuestions = async () => {
     // server
     {
       type: 'confirm',
-      name: 'local',
+      name: 'server.local',
       message: 'Run LogChimp for local development/testing',
       choices: ['false', 'true'],
       default: false,

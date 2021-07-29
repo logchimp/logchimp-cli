@@ -42,11 +42,14 @@ class ConfigGenerateCommand extends Command {
     }
 
     const generateConfig = {
-      local: flags.local,
-      port: flags.port,
-      secretkey: flags.secretkey ? flags.secretkey : generatePassword(),
+      server: {
+        local: flags.local,
+        port: flags.port,
+        secretkey: flags.secretkey ? flags.secretkey : generatePassword(),
+      },
       database: {
         host: flags.dbhost,
+        name: flags.dbname,
         port: flags.dbport,
         user: flags.dbuser,
         password: flags.dbpass,
