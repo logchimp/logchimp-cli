@@ -31,10 +31,10 @@ describe('config:set command', () => {
     // generate config file
     await runCommand(['config:generate'])
 
-    await runCommand(['config:set', '-k=secretkey', '-v=mySecretKey'])
+    await runCommand(['config:set', '-k=server.secretkey', '-v=mySecretKey'])
 
     const currentDirectory = await process.cwd()
     const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
-    expect(config.secretkey).toBe('mySecretKey')
+    expect(config.server.secretkey).toBe('mySecretKey')
   })
 })
