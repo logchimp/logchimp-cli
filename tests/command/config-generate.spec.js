@@ -104,9 +104,6 @@ describe('config:generate command', () => {
   })
 
   it('with both --env and --interactive present', async () => {
-    // verify this throws an error
-    expect.assertions(1)
-
     // try to generate a config file
     try {
       await runCommand(['config:generate', '--env', '--interactive'])
