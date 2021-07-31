@@ -24,6 +24,17 @@ describe('config:generate command', () => {
       const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
       const isConfigEmpty = _.isEmpty(config)
       expect(isConfigEmpty).toBe(false)
+
+      // server
+      expect(config.server.local).toBe(false)
+      expect(config.server.port).toBe(3000)
+
+      // database
+      expect(config.database.port).toBe(5432)
+      expect(config.database.ssl).toBe(true)
+
+      // mail
+      expect(config.mail.port).toBe(587)
     })
 
     it('with flags', async () => {
@@ -51,15 +62,15 @@ describe('config:generate command', () => {
       const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
 
       // server
-      expect(config.local).toBe(false)
-      expect(config.port).toBe(80)
-      expect(config.secretkey).toBe('mySecretKey')
+      expect(config.server.local).toBe(false)
+      expect(config.server.port).toBe(80)
+      expect(config.server.secretkey).toBe('mySecretKey')
       // database
       expect(config.database.host).toBe('postgres-db.logchimp.codecarrot.net')
+      expect(config.database.name).toBe('pg_db')
       expect(config.database.port).toBe(51000)
       expect(config.database.user).toBe('pg_db_user')
       expect(config.database.password).toBe('myDatabasePassword')
-      expect(config.database.ssl).toBe(false)
       expect(config.database.ssl).toBe(false)
 
       // mail
