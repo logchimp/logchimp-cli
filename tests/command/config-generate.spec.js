@@ -112,6 +112,12 @@ describe('config:generate command', () => {
       await runCommand(['config:generate', '--env', '--interactive'])
     } catch (error) {
       expect(error.message).toContain('You cannot use both --env and --interactive flag.')
+
+      // Is config file is not empty?
+      const currentDirectory = await process.cwd()
+      const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
+      const isConfigEmpty = _.isEmpty(config)
+      expect(isConfigEmpty).toBe(true)
     }
   })
 
