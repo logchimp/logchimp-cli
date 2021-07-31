@@ -112,7 +112,7 @@ describe('config:generate command', () => {
   it('with --env flag', async () => {
     const currentDirectory = await process.cwd()
 
-    //create .env file if not already present
+    // create .env file if not already present
     const envIsPresent = fs.existsSync(`${currentDirectory}/.env`)
 
     if (!envIsPresent) {
