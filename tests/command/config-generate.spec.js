@@ -24,6 +24,17 @@ describe('config:generate command', () => {
       const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
       const isConfigEmpty = _.isEmpty(config)
       expect(isConfigEmpty).toBe(false)
+
+      // server
+      expect(config.server.local).toBe(false)
+      expect(config.server.port).toBe(3000)
+
+      // database
+      expect(config.database.port).toBe(5432)
+      expect(config.database.ssl).toBe(true)
+
+      // mail
+      expect(config.mail.port).toBe(587)
     })
 
     it('with flags', async () => {
