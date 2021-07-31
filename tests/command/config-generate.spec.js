@@ -95,6 +95,12 @@ describe('config:generate command', () => {
     const command = await runCommand(['config:generate'])
 
     expect(command.stdout).toBe('Logchimp configuration file already exists.')
+
+    // Is config file is not empty?
+    const currentDirectory = await process.cwd()
+    const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
+    const isConfigEmpty = _.isEmpty(config)
+    expect(isConfigEmpty).toBe(false)
   })
 
   it('with both --env and --interactive present', async () => {
