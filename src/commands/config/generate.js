@@ -51,12 +51,12 @@ class ConfigGenerateCommand extends Command {
     if (flags.env) {
       const generateConfig = {
         server: {
-          port: parseInt(process.env.LOGCHIMP_SERVER_PORT) || 3000,
+          port: _.toNumber(process.env.LOGCHIMP_SERVER_PORT) || 3000,
           secretkey: process.env.LOGCHIMP_SECRET_KEY,
         },
         database: {
           host: process.env.LOGCHIMP_DB_HOST,
-          port: parseInt(process.env.LOGCHIMP_DB_PORT) || 5432,
+          port: _.toNumber(process.env.LOGCHIMP_DB_PORT) || 5432,
           user: process.env.LOGCHIMP_DB_USER,
           password: process.env.LOGCHIMP_DB_PASSWORD,
           name: process.env.LOGCHIMP_DB_DATABASE,
@@ -66,7 +66,7 @@ class ConfigGenerateCommand extends Command {
         mail: {
           service: process.env.LOGCHIMP_MAIL_SERVICE,
           host: process.env.LOGCHIMP_MAIL_HOST,
-          port: parseInt(process.env.LOGCHIMP_MAIL_PORT) || 587,
+          port: _.toNumber(process.env.LOGCHIMP_MAIL_PORT) || 587,
           user: process.env.LOGCHIMP_MAIL_USER,
           password: process.env.LOGCHIMP_MAIL_PASSWORD,
         },
