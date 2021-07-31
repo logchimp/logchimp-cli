@@ -115,9 +115,8 @@ describe('config:generate command', () => {
 
       // Is config file is not empty?
       const currentDirectory = await process.cwd()
-      const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
-      const isConfigEmpty = _.isEmpty(config)
-      expect(isConfigEmpty).toBe(true)
+      const isConfigExists = fs.existsSync(`${currentDirectory}/logchimp.config.json`)
+      expect(isConfigExists).toBe(false)
     }
   })
 
