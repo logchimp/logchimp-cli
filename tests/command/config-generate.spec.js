@@ -106,5 +106,83 @@ describe('config:generate command', () => {
     const command = await runCommand(['config:generate'])
 
     expect(command.stdout).toBe('Logchimp configuration file already exists.')
+
+    // Is config file is not empty?
+    const currentDirectory = await process.cwd()
+    const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
+    const isConfigEmpty = _.isEmpty(config)
+    expect(isConfigEmpty).toBe(false)
+  })
+
+  it('with both --env and --interactive present', async () => {
+    // verify this throws an error
+    expect.assertions(2)
+
+    // try to generate a config file
+    try {
+      await runCommand(['config:generate', '--env', '--interactive'])
+    } catch (error) {
+      expect(error.message).toContain('You cannot use both --env and --interactive flag.')
+
+      // Is config file is not empty?
+      const currentDirectory = await process.cwd()
+      const isConfigExists = fs.existsSync(`${currentDirectory}/logchimp.config.json`)
+      expect(isConfigExists).toBe(false)
+    }
+  })
+
+  it('with --env flag', async () => {
+    const currentDirectory = await process.cwd()
+
+    // create .env file if not already present
+    const envIsPresent = fs.existsSync(`${currentDirectory}/.env`)
+
+    if (!envIsPresent) {
+      fs.writeFileSync(
+        `${currentDirectory}/.env`,
+        `LOGCHIMP_SERVER_PORT=3000
+LOGCHIMP_SECRET_KEY=secret-key
+LOGCHIMP_DB_HOST=localhost
+LOGCHIMP_DB_PORT=5432
+LOGCHIMP_DB_USER=logchimp
+LOGCHIMP_DB_PASSWORD=secret-password
+LOGCHIMP_DB_DATABASE=logchimpDB
+LOGCHIMP_DB_SSL=true
+LOGCHIMP_MAIL_SERVICE=service
+LOGCHIMP_MAIL_HOST=mail_host
+LOGCHIMP_MAIL_PORT=587
+LOGCHIMP_MAIL_USER=mail_username
+LOGCHIMP_MAIL_PASSWORD=mail_password`
+      )
+    }
+
+    // generate config file
+    const command = await runCommand(['config:generate', '--env'])
+
+    expect(command.stdout).toContain('LogChimp configuration file succesfully created from environment variables')
+
+    // validate configuration file
+    const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
+    const isConfigEmpty = _.isEmpty(config)
+    expect(isConfigEmpty).toBe(false)
+
+     // server
+     expect(config.server.secretkey).toBe('secret-key')
+     expect(config.server.port).toBe(3000)
+
+     // database
+     expect(config.database.host).toBe('localhost')
+     expect(config.database.user).toBe('logchimp')
+     expect(config.database.password).toBe('secret-password')
+     expect(config.database.name).toBe('logchimpDB')
+     expect(config.database.port).toBe(5432)
+     expect(config.database.ssl).toBe(true)
+
+     // mail
+     expect(config.mail.service).toBe('service')
+     expect(config.mail.host).toBe('mail_host')
+     expect(config.mail.user).toBe('mail_username')
+     expect(config.mail.password).toBe('mail_password')
+     expect(config.mail.port).toBe(587)
   })
 })

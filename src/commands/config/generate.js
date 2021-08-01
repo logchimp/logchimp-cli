@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Command, flags } = require('@oclif/command')
 const path = require('path')
 const omgopass = require('omgopass')
@@ -26,6 +27,11 @@ class ConfigGenerateCommand extends Command {
       return
     }
 
+    // Throw an error if both --env and --interactive flags are present
+    if (flags.interactive && flags.env) {
+      this.error('You cannot use both --env and --interactive flag.')
+    }
+
     // Check for --interactive flag
     if (flags.interactive) {
       const generateConfig = await askQuestions()
@@ -39,6 +45,36 @@ class ConfigGenerateCommand extends Command {
       return omgopass({
         minSyllableLength: 12,
       })
+    }
+
+    // Check if --env flag is present
+    if (flags.env) {
+      const generateConfig = {
+        server: {
+          port: _.toNumber(process.env.LOGCHIMP_SERVER_PORT) || 3000,
+          secretkey: process.env.LOGCHIMP_SECRET_KEY,
+        },
+        database: {
+          host: process.env.LOGCHIMP_DB_HOST,
+          port: _.toNumber(process.env.LOGCHIMP_DB_PORT) || 5432,
+          user: process.env.LOGCHIMP_DB_USER,
+          password: process.env.LOGCHIMP_DB_PASSWORD,
+          name: process.env.LOGCHIMP_DB_DATABASE,
+          // dotenv returns all environment variables as strings
+          ssl: process.env.LOGCHIMP_DB_SSL ? process.env.LOGCHIMP_DB_SSL === 'true' : true,
+        },
+        mail: {
+          service: process.env.LOGCHIMP_MAIL_SERVICE,
+          host: process.env.LOGCHIMP_MAIL_HOST,
+          port: _.toNumber(process.env.LOGCHIMP_MAIL_PORT) || 587,
+          user: process.env.LOGCHIMP_MAIL_USER,
+          password: process.env.LOGCHIMP_MAIL_PASSWORD,
+        },
+      }
+
+      config.set(generateConfig).save()
+      this.log('LogChimp configuration file succesfully created from environment variables.')
+      return
     }
 
     const generateConfig = {
@@ -80,6 +116,10 @@ ConfigGenerateCommand.flags = {
   force: flags.boolean({
     char: 'f',
     description: 'Overwrite the existing configuration file, if present.',
+    default: false,
+  }),
+  env: flags.boolean({
+    description: 'Create configuration file from environment variables',
     default: false,
   }),
   local: flags.boolean({
@@ -143,6 +183,8 @@ ConfigGenerateCommand.usage = ['config:generate [flags]']
 ConfigGenerateCommand.examples = [
   '$ logchimp config:generate --force',
   '$ logchimp config:generate --dbhost=localhost --dbuser=username --dbname=database --dbport=5432',
+  '$ logchimp config:generate --interactive',
+  '$ logchimp config:generate --env',
 ]
 
 module.exports = ConfigGenerateCommand
