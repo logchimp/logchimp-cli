@@ -68,5 +68,9 @@
     "test": "jest ./tests/**/*.spec.js",
     "version": "oclif-dev readme && git add README.md",
     "prettier": "prettier --write \"**/*.{js,md}\""
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/logchimp"
   }
 }
