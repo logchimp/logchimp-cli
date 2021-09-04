@@ -1,6 +1,6 @@
 {
   "name": "logchimp-cli",
-  "description": "CLI Tool for installing & updating LogChimp",
+  "description": "CLI Tool for LogChimp",
   "version": "0.2.2",
   "author": "Yashu Mittal @mittalyashu",
   "bin": {
