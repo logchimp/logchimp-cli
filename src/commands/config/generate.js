@@ -51,6 +51,7 @@ class ConfigGenerateCommand extends Command {
     if (flags.env) {
       const generateConfig = {
         server: {
+          host: process.env.LOGCHIMP_SECRET_HOST,
           port: _.toNumber(process.env.LOGCHIMP_SERVER_PORT) || 3000,
           secretkey: process.env.LOGCHIMP_SECRET_KEY,
         },
@@ -80,6 +81,7 @@ class ConfigGenerateCommand extends Command {
     const generateConfig = {
       server: {
         local: flags.local,
+        host: flags.host,
         port: flags.port,
         secretkey: flags.secretkey ? flags.secretkey : generatePassword(),
       },
@@ -128,6 +130,10 @@ ConfigGenerateCommand.flags = {
   }),
 
   // server
+  host: flags.string({
+    description: 'Server host',
+    default: '127.0.0.1',
+  }),
   port: flags.integer({
     description: 'Server port to listen on',
     default: 3000,
