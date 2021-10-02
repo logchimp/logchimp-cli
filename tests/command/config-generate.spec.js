@@ -215,22 +215,22 @@ LOGCHIMP_MAIL_PASSWORD=mail_password`
 
     // server
     expect(config.server.host).toBe('127.0.0.1')
-    expect(config.server.secretkey).toBe('')
+    expect(config.server.secretkey).toBeUndefined()
     expect(config.server.port).toBe(3000)
 
     // database
-    expect(config.database.host).toBe('')
-    expect(config.database.user).toBe('logchimp')
-    expect(config.database.password).toBe('')
-    expect(config.database.name).toBe('')
+    expect(config.database.host).toBeUndefined()
+    expect(config.database.user).toBeUndefined()
+    expect(config.database.password).toBeUndefined()
+    expect(config.database.name).toBeUndefined()
     expect(config.database.port).toBe(5432)
     expect(config.database.ssl).toBe(true)
 
     // mail
-    expect(config.mail.service).toBe('')
-    expect(config.mail.host).toBe('')
-    expect(config.mail.user).toBe('')
-    expect(config.mail.password).toBe('')
+    expect(config.mail.service).toBeUndefined()
+    expect(config.mail.host).toBeUndefined()
+    expect(config.mail.user).toBeUndefined()
+    expect(config.mail.password).toBeUndefined()
     expect(config.mail.port).toBe(587)
   })
 })
