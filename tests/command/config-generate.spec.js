@@ -10,7 +10,8 @@ describe('config:generate command', () => {
   beforeEach(async () => {
     // fail-safe: delete any existing logchimp config at root directory
     const currentDirectory = await process.cwd()
-    await fs.removeSync(`${currentDirectory}/logchimp.config.json`)
+    fs.removeSync(`${currentDirectory}/logchimp.config.json`)
+    fs.removeSync(`${currentDirectory}/.env`)
   })
 
   describe('generate config', () => {
