@@ -27,6 +27,7 @@ describe('config:generate command', () => {
 
       // server
       expect(config.server.local).toBe(false)
+      expect(config.server.host).toBe('127.0.0.1')
       expect(config.server.port).toBe(3000)
 
       // database
@@ -41,6 +42,7 @@ describe('config:generate command', () => {
       const command = await runCommand([
         'config:generate',
         '--port=80',
+        '--host=0.0.0.0',
         '--secretkey=mySecretKey',
         '--dbhost=postgres-db.logchimp.codecarrot.net',
         '--dbuser=pg_db_user',
@@ -63,6 +65,7 @@ describe('config:generate command', () => {
 
       // server
       expect(config.server.local).toBe(false)
+      expect(config.server.host).toBe('0.0.0.0')
       expect(config.server.port).toBe(80)
       expect(config.server.secretkey).toBe('mySecretKey')
       // database
@@ -141,6 +144,7 @@ describe('config:generate command', () => {
       fs.writeFileSync(
         `${currentDirectory}/.env`,
         `LOGCHIMP_SERVER_PORT=3000
+LOGCHIMP_SECRET_HOST=0.0.0.0
 LOGCHIMP_SECRET_KEY=secret-key
 LOGCHIMP_DB_HOST=localhost
 LOGCHIMP_DB_PORT=5432
@@ -167,6 +171,7 @@ LOGCHIMP_MAIL_PASSWORD=mail_password`
     expect(isConfigEmpty).toBe(false)
 
      // server
+     expect(config.server.host).toBe('0.0.0.0')
      expect(config.server.secretkey).toBe('secret-key')
      expect(config.server.port).toBe(3000)
 
