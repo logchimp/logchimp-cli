@@ -170,24 +170,24 @@ LOGCHIMP_MAIL_PASSWORD=mail_password`
     const isConfigEmpty = _.isEmpty(config)
     expect(isConfigEmpty).toBe(false)
 
-     // server
-     expect(config.server.host).toBe('0.0.0.0')
-     expect(config.server.secretkey).toBe('secret-key')
-     expect(config.server.port).toBe(3000)
+    // server
+    expect(config.server.host).toBe('0.0.0.0')
+    expect(config.server.secretkey).toBe('secret-key')
+    expect(config.server.port).toBe(3000)
 
-     // database
-     expect(config.database.host).toBe('localhost')
-     expect(config.database.user).toBe('logchimp')
-     expect(config.database.password).toBe('secret-password')
-     expect(config.database.name).toBe('logchimpDB')
-     expect(config.database.port).toBe(5432)
-     expect(config.database.ssl).toBe(true)
+    // database
+    expect(config.database.host).toBe('localhost')
+    expect(config.database.user).toBe('logchimp')
+    expect(config.database.password).toBe('secret-password')
+    expect(config.database.name).toBe('logchimpDB')
+    expect(config.database.port).toBe(5432)
+    expect(config.database.ssl).toBe(true)
 
-     // mail
-     expect(config.mail.service).toBe('service')
-     expect(config.mail.host).toBe('mail_host')
-     expect(config.mail.user).toBe('mail_username')
-     expect(config.mail.password).toBe('mail_password')
-     expect(config.mail.port).toBe(587)
+    // mail
+    expect(config.mail.service).toBe('service')
+    expect(config.mail.host).toBe('mail_host')
+    expect(config.mail.user).toBe('mail_username')
+    expect(config.mail.password).toBe('mail_password')
+    expect(config.mail.port).toBe(587)
   })
 })
