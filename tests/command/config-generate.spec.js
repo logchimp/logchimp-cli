@@ -190,4 +190,46 @@ LOGCHIMP_MAIL_PASSWORD=mail_password`
     expect(config.mail.password).toBe('mail_password')
     expect(config.mail.port).toBe(587)
   })
+
+  it('with --env flag and default values', async () => {
+    const currentDirectory = await process.cwd()
+
+    // create .env file if not already present
+    const envIsPresent = fs.existsSync(`${currentDirectory}/.env`)
+
+    if (!envIsPresent) {
+      // intentionally creating an empty .env file
+      fs.writeFileSync(`${currentDirectory}/.env`, '')
+    }
+
+    // generate config file
+    const command = await runCommand(['config:generate', '--env'])
+
+    expect(command.stdout).toContain('LogChimp configuration file succesfully created from environment variables')
+
+    // validate configuration file
+    const config = fs.readJsonSync(`${currentDirectory}/logchimp.config.json`)
+    const isConfigEmpty = _.isEmpty(config)
+    expect(isConfigEmpty).toBe(false)
+
+    // server
+    expect(config.server.host).toBe('127.0.0.1')
+    expect(config.server.secretkey).toBe('')
+    expect(config.server.port).toBe(3000)
+
+    // database
+    expect(config.database.host).toBe('')
+    expect(config.database.user).toBe('logchimp')
+    expect(config.database.password).toBe('')
+    expect(config.database.name).toBe('')
+    expect(config.database.port).toBe(5432)
+    expect(config.database.ssl).toBe(true)
+
+    // mail
+    expect(config.mail.service).toBe('')
+    expect(config.mail.host).toBe('')
+    expect(config.mail.user).toBe('')
+    expect(config.mail.password).toBe('')
+    expect(config.mail.port).toBe(587)
+  })
 })
