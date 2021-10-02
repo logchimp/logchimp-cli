@@ -62,7 +62,7 @@ class Config {
     try {
       const result = fs.readJsonSync(filename)
       return result
-    } catch (error) {
+    } catch {
       return false
     }
   }

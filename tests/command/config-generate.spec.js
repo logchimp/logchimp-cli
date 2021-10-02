@@ -49,7 +49,7 @@ describe('config:generate command', () => {
         '--dbuser=pg_db_user',
         '--dbpass=myDatabasePassword',
         '--dbname=pg_db',
-        '--dbport=51000',
+        '--dbport=5100',
         '--no-dbssl',
         '--mailservice=awesomeMailService',
         '--mailuser=mail_user',
@@ -72,7 +72,7 @@ describe('config:generate command', () => {
       // database
       expect(config.database.host).toBe('postgres-db.logchimp.codecarrot.net')
       expect(config.database.name).toBe('pg_db')
-      expect(config.database.port).toBe(51000)
+      expect(config.database.port).toBe(5100)
       expect(config.database.user).toBe('pg_db_user')
       expect(config.database.password).toBe('myDatabasePassword')
       expect(config.database.ssl).toBe(false)

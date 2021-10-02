@@ -8,6 +8,12 @@ const _ = require('lodash')
 const Config = require('../../utils/config')
 const askQuestions = require('../../utils/ask-questions')
 
+// generate random password
+const generatePassword = () =>
+  omgopass({
+    minSyllableLength: 12,
+  })
+
 class ConfigGenerateCommand extends Command {
   async run() {
     const currentDirectory = await process.cwd()
@@ -38,13 +44,6 @@ class ConfigGenerateCommand extends Command {
       config.set(generateConfig).save()
       this.log('LogChimp configuration file succesfully created.')
       return
-    }
-
-    // generate random password
-    let generatePassword = () => {
-      return omgopass({
-        minSyllableLength: 12,
-      })
     }
 
     // Check if --env flag is present

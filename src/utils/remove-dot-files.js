@@ -16,11 +16,12 @@ const removeDotFiles = (directory) => {
       if (!item.split('.')[0]) {
         return item
       }
+
       return null
     })
 
-    for (let i = 0; i < dotFiles.length; i++) {
-      fsExtra.removeSync(`${directory}/${dotFiles[i]}`)
+    for (const dotFile of dotFiles) {
+      fsExtra.removeSync(`${directory}/${dotFile}`)
     }
   })
 }
