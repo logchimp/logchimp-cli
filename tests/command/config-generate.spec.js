@@ -145,7 +145,7 @@ describe('config:generate command', () => {
       fs.writeFileSync(
         `${currentDirectory}/.env`,
         `LOGCHIMP_SERVER_PORT=3000
-LOGCHIMP_SECRET_HOST=0.0.0.0
+LOGCHIMP_SERVER_HOST=0.0.0.0
 LOGCHIMP_SECRET_KEY=secret-key
 LOGCHIMP_DB_HOST=localhost
 LOGCHIMP_DB_PORT=5432
