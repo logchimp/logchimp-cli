@@ -9,7 +9,7 @@ const Config = require('../../utils/config')
 const askQuestions = require('../../utils/ask-questions')
 
 // generate random password
-let generatePassword = () =>
+const generatePassword = () =>
   omgopass({
     minSyllableLength: 12,
   })
