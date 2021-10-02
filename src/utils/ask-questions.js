@@ -24,8 +24,8 @@ const askQuestions = async () => {
       default: 3000,
       validate: (answer) => {
         // Check port is not empty and is number
-        const isNumber = !isNaN(answer)
-        if (answer !== '') if (isNumber) return true
+        const isNumber = !Number.isNaN(answer)
+        if (answer !== '' && isNumber) return true
 
         return 'Please enter a correct server port'
       },
@@ -50,6 +50,7 @@ const askQuestions = async () => {
         if (_.isString(answer) && answer) {
           return true
         }
+
         return 'Please enter a valid database name'
       },
     },
@@ -58,10 +59,10 @@ const askQuestions = async () => {
       name: 'database.host',
       message: 'Database host',
       validate: (answer) => {
-        const isString = isNaN(answer)
+        const isString = Number.isNaN(answer)
 
         // Warn for special characters
-        const removeSpecialCharacters = answer.match(/[^.\w\s-]/gi)
+        const removeSpecialCharacters = answer.match(/[^\s\w.-]/gi)
         if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
 
         if (isString) return true
@@ -74,8 +75,8 @@ const askQuestions = async () => {
       default: 5432,
       validate: (answer) => {
         // Check port is not empty and is number
-        const isNumber = !isNaN(answer)
-        if (answer !== '') if (isNumber) return true
+        const isNumber = !Number.isNaN(answer)
+        if (answer !== '' && isNumber) return true
 
         return 'Please enter a correct database port'
       },
@@ -88,6 +89,7 @@ const askQuestions = async () => {
         if (_.isString(answer) && answer) {
           return true
         }
+
         return 'Please enter a valid database username'
       },
     },
@@ -117,6 +119,7 @@ const askQuestions = async () => {
         if (_.isString(answer) && answer) {
           return true
         }
+
         return 'Please enter a valid mail service name'
       },
     },
@@ -125,10 +128,10 @@ const askQuestions = async () => {
       name: 'mail.host',
       message: 'Mail hostname',
       validate: (answer) => {
-        const isString = isNaN(answer)
+        const isString = Number.isNaN(answer)
 
         // Warn for special characters
-        const removeSpecialCharacters = answer.match(/[^.\w\s-]/gi)
+        const removeSpecialCharacters = answer.match(/[^\s\w.-]/gi)
         if (!_.isEmpty(removeSpecialCharacters)) return 'Special characters are not supported'
 
         if (isString) return true
@@ -141,8 +144,8 @@ const askQuestions = async () => {
       default: 587,
       validate: (answer) => {
         // Check port is not empty and is number
-        const isNumber = !isNaN(answer)
-        if (answer !== '') if (isNumber) return true
+        const isNumber = !Number.isNaN(answer)
+        if (answer !== '' && isNumber) return true
 
         return 'Please enter a correct mail port'
       },
@@ -155,6 +158,7 @@ const askQuestions = async () => {
         if (_.isString(answer) && answer) {
           return true
         }
+
         return 'Please enter a valid mail username'
       },
     },
