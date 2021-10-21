@@ -48,7 +48,7 @@ describe('config:generate command', () => {
         '--port=80',
         '--host=0.0.0.0',
         '--secretkey=mySecretKey',
-        '--standalone=true',
+        '--standalone',
         '--dbhost=postgres-db.logchimp.codecarrot.net',
         '--dbuser=pg_db_user',
         '--dbpass=myDatabasePassword',
