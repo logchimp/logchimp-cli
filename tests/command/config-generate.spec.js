@@ -31,6 +31,9 @@ describe('config:generate command', () => {
       expect(config.server.host).toBe('127.0.0.1')
       expect(config.server.port).toBe(3000)
 
+      // theme
+      expect(config.theme.standalone).toBe(false)
+
       // database
       expect(config.database.port).toBe(5432)
       expect(config.database.ssl).toBe(true)
@@ -45,6 +48,7 @@ describe('config:generate command', () => {
         '--port=80',
         '--host=0.0.0.0',
         '--secretkey=mySecretKey',
+        '--standalone=true',
         '--dbhost=postgres-db.logchimp.codecarrot.net',
         '--dbuser=pg_db_user',
         '--dbpass=myDatabasePassword',
@@ -69,6 +73,10 @@ describe('config:generate command', () => {
       expect(config.server.host).toBe('0.0.0.0')
       expect(config.server.port).toBe(80)
       expect(config.server.secretkey).toBe('mySecretKey')
+
+      // theme
+      expect(config.theme.standalone).toBe(true)
+
       // database
       expect(config.database.host).toBe('postgres-db.logchimp.codecarrot.net')
       expect(config.database.name).toBe('pg_db')
@@ -175,6 +183,9 @@ LOGCHIMP_MAIL_PASSWORD=mail_password`
     expect(config.server.host).toBe('0.0.0.0')
     expect(config.server.secretkey).toBe('secret-key')
     expect(config.server.port).toBe(3000)
+
+    // theme
+    expect(config.theme.standalone).toBe(false)
 
     // database
     expect(config.database.host).toBe('localhost')
