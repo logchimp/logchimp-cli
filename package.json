@@ -10,7 +10,7 @@
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
+    "@oclif/plugin-help": "^5",
     "@oclif/plugin-warn-if-update-available": "^1.7.0",
     "chalk": "^4.1.0",
     "decompress": "^4.2.1",
