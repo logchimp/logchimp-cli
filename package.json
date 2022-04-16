@@ -11,7 +11,7 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-warn-if-update-available": "^1.7.0",
+    "@oclif/plugin-warn-if-update-available": "^2.0.4",
     "chalk": "^5.0.1",
     "decompress": "^4.2.1",
     "dotenv": "^16.0.0",
