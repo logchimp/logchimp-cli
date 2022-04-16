@@ -28,7 +28,7 @@
     "eslint": "^7.11",
     "eslint-config-oclif": "^4.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^25.2.0",
+    "eslint-plugin-jest": "25.7.0",
     "jest": "^27.0.4",
     "prettier": "^2.3.2"
   },
