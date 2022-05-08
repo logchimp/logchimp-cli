@@ -54,6 +54,11 @@ class ConfigGenerateCommand extends Command {
           port: _.toNumber(process.env.LOGCHIMP_SERVER_PORT) || 3000,
           secretkey: process.env.LOGCHIMP_SECRET_KEY,
         },
+        theme: {
+          standalone: process.env.LOGCHIMP_THEME_STANDALONE ? process.env.LOGCHIMP_THEME_STANDALONE === 'true' : false,
+          port: _.toNumber(process.env.LOGCHIMP_SERVER_PORT) || 3000,
+          secretkey: process.env.LOGCHIMP_SECRET_KEY,
+        },
         database: {
           host: process.env.LOGCHIMP_DB_HOST,
           port: _.toNumber(process.env.LOGCHIMP_DB_PORT) || 5432,
@@ -83,6 +88,9 @@ class ConfigGenerateCommand extends Command {
         host: flags.host,
         port: flags.port,
         secretkey: flags.secretkey ? flags.secretkey : generatePassword(),
+      },
+      theme: {
+        standalone: flags.standalone,
       },
       database: {
         host: flags.dbhost,
@@ -126,6 +134,12 @@ ConfigGenerateCommand.flags = {
   local: flags.boolean({
     description: 'Run LogChimp for local development/testing',
     default: false,
+  }),
+
+  // theme
+  standalone: flags.boolean({
+    default: false,
+    description: 'Run theme separate from LogChimp APIs',
   }),
 
   // server
